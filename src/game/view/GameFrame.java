@@ -1,5 +1,6 @@
 package game.view;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
 import game.controller.Controller;
@@ -9,12 +10,12 @@ public class GameFrame extends JFrame
 	private Controller app;
 	private GamePanel panel;
 	
-	public GameFrame(Controller app)
+	public GameFrame(Controller app, int numCols, int numRows)
 	{
 		super();
 		
 		this.app = app;
-		this.panel = new GamePanel(app);
+		this.panel = new GamePanel(app, numCols, numRows);
 		
 		setupFrame();
 	}
@@ -23,7 +24,10 @@ public class GameFrame extends JFrame
 	{
 		this.setTitle("Game Project");
 		this.setSize(800, 600);
-		//this.setContentPane(panel);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setContentPane(panel);
+		this.setResizable(false);
+		//this.pack();
 		this.setVisible(true);
 	}
 }

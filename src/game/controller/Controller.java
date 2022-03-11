@@ -8,7 +8,7 @@ public class Controller
 	
 	public Controller()
 	{
-		display = new GameFrame(this);
+		display = new GameFrame(this, 500, 800);
 	}
 	
 	public void start() 
