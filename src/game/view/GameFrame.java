@@ -15,7 +15,7 @@ public class GameFrame extends JFrame
 		super();
 		
 		this.app = app;
-		this.panel = new GamePanel(app, numCols, numRows);
+		this.panel = new GamePanel(app);
 		
 		setupFrame();
 	}
@@ -27,7 +27,6 @@ public class GameFrame extends JFrame
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setContentPane(panel);
 		this.setResizable(false);
-		//this.pack();
 		this.setVisible(true);
 	}
 }
