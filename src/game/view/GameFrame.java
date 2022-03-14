@@ -2,6 +2,7 @@ package game.view;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import game.controller.Controller;
 
@@ -10,7 +11,7 @@ public class GameFrame extends JFrame
 	private Controller app;
 	private GamePanel panel;
 	
-	public GameFrame(Controller app, int numCols, int numRows)
+	public GameFrame(Controller app)
 	{
 		super();
 		

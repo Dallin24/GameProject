@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
@@ -18,30 +21,24 @@ import game.controller.Controller;
 public class GamePanel extends JPanel
 {
 	private Controller app;
-	private JPanel fruit;
+	private JPanel fieldPanel;
+	
+	private JLabel[][] fieldGrid;
 
 	private SpringLayout layout;
-	
-	private int x = 0, y = 15;
-
-	private String[][] twoDCells;
+	private GridLayout fieldLayout;
 
 	public GamePanel(Controller app)
 	{
 		super();
 
 		this.app = app;
-
+		this.fieldPanel = new JPanel();
+		this.fieldGrid = new JLabel[50][60];
+		
 		this.layout = new SpringLayout();
-		this.fruit = new JPanel();
-
-		twoDCells = new String[][] 
-				{ 
-					{ "Apples", "Oranges", "Bananas" }, 
-					{ "Cherries", "Plums", "Nectarines" }, 
-					{"Coconuts", "Mango", "Dragon Fruit" },
-					{ "Blueberries", "Raspberries", "Poisonberries" } 
-				};
+		this.fieldLayout = new GridLayout(fieldGrid.length, fieldGrid[0].length);
+		
 
 		setupPanel();
 		setupListeners();
@@ -52,28 +49,22 @@ public class GamePanel extends JPanel
 	{
 		this.setLayout(layout);
 		this.setPreferredSize(new Dimension(800, 600));
+		
+		fieldPanel.setLayout(fieldLayout);
+		
+		
+		for(int row = 0; row < fieldGrid.length; row++)
+		{
+			for(int column = 0; column < fieldGrid[0].length; column++)
+			{
+				fieldPanel.add(new JLabel(new ImageIcon(getClass().getResource("/game/view/images/RedFireDown.png"))));
+			}
+		}
+		
+		this.add(fieldPanel);
 
-		fruit.setBackground( Color.WHITE );
-		fruit.setDoubleBuffered( true );
 	}
 
-	public void paint(Graphics g) 
-	{
-        super.paint( g );			
-        Graphics2D g2 = ( Graphics2D )g;   
-        
-        for( int i = 0; i < 4; i++ )
-        {
-        	for( int j = 0; j < 3; j++ )
-        	{
-        		g2.drawString( twoDCells[i][j], x, y ) ;
-        		y += 30;
-        	}
-        	
-        }
-       
-        Toolkit.getDefaultToolkit().sync();
-	}
 	
 	private void setupListeners()
 	{
