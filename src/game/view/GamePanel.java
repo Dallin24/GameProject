@@ -22,7 +22,7 @@ public class GamePanel extends JPanel
 {
 	private Controller app;
 	private JPanel fieldPanel;
-	
+
 	private JLabel[][] fieldGrid;
 
 	private SpringLayout layout;
@@ -34,11 +34,10 @@ public class GamePanel extends JPanel
 
 		this.app = app;
 		this.fieldPanel = new JPanel();
-		this.fieldGrid = new JLabel[50][60];
-		
+		this.fieldGrid = new JLabel[15][35];
+
 		this.layout = new SpringLayout();
 		this.fieldLayout = new GridLayout(fieldGrid.length, fieldGrid[0].length);
-		
 
 		setupPanel();
 		setupListeners();
@@ -49,23 +48,28 @@ public class GamePanel extends JPanel
 	{
 		this.setLayout(layout);
 		this.setPreferredSize(new Dimension(800, 600));
-		
+
 		fieldPanel.setLayout(fieldLayout);
+		fieldPanel.setPreferredSize(new Dimension(800, 400));
 		
-		
-		for(int row = 0; row < fieldGrid.length; row++)
-		{
-			for(int column = 0; column < fieldGrid[0].length; column++)
-			{
-				fieldPanel.add(new JLabel(new ImageIcon(getClass().getResource("/game/view/images/RedFireDown.png"))));
-			}
-		}
-		
+		setupInitialGameField();
+
 		this.add(fieldPanel);
 
 	}
 
-	
+	private void setupInitialGameField()
+	{
+		for (int row = 0; row < fieldGrid.length; row++)
+		{
+			for (int column = 0; column < fieldGrid[0].length; column++)
+			{
+				fieldPanel.add(new JLabel(new ImageIcon(getClass().getResource("/game/view/images/RedFireDown.png"))));
+				
+			}
+		}
+	}
+
 	private void setupListeners()
 	{
 
