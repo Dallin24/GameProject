@@ -34,7 +34,7 @@ public class GamePanel extends JPanel
 
 		this.app = app;
 		this.fieldPanel = new JPanel();
-		this.fieldGrid = new JLabel[15][35];
+		this.fieldGrid = new JLabel[14][21];
 
 		this.layout = new SpringLayout();
 		this.fieldLayout = new GridLayout(fieldGrid.length, fieldGrid[0].length);
@@ -64,7 +64,7 @@ public class GamePanel extends JPanel
 		{
 			for (int column = 0; column < fieldGrid[0].length; column++)
 			{
-				fieldPanel.add(new JLabel(new ImageIcon(getClass().getResource("/game/view/images/RedFireDown.png"))));
+				fieldPanel.add(new JLabel(new ImageIcon(getClass().getResource("/game/view/images/Red.png"))));
 				
 			}
 		}
