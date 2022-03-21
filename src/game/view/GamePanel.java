@@ -22,6 +22,7 @@ public class GamePanel extends JPanel
 {
 	private Controller app;
 	private JPanel fieldPanel;
+	private JPanel fieldBackground;
 
 	private JLabel[][] fieldGrid;
 
@@ -34,9 +35,12 @@ public class GamePanel extends JPanel
 
 		this.app = app;
 		this.fieldPanel = new JPanel();
-		this.fieldGrid = new JLabel[14][21];
+		this.fieldBackground = new JPanel();
+		
+		this.fieldGrid = new JLabel[25][45];
 
 		this.layout = new SpringLayout();
+
 		this.fieldLayout = new GridLayout(fieldGrid.length, fieldGrid[0].length);
 
 		setupPanel();
@@ -47,14 +51,16 @@ public class GamePanel extends JPanel
 	private void setupPanel()
 	{
 		this.setLayout(layout);
-		this.setPreferredSize(new Dimension(800, 600));
-
+		this.setBackground(Color.BLACK);
+		
+		fieldBackground.add(fieldPanel);
+		fieldBackground.setBackground(Color.LIGHT_GRAY);
 		fieldPanel.setLayout(fieldLayout);
-		fieldPanel.setPreferredSize(new Dimension(800, 400));
+		
 		
 		setupInitialGameField();
 
-		this.add(fieldPanel);
+		this.add(fieldBackground);
 
 	}
 
