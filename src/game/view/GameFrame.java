@@ -30,13 +30,4 @@ public class GameFrame extends JFrame
 		this.setVisible(true);
 		this.setResizable(false);
 	}
-	
-	private void setupFrame2()
-	{
-		this.setTitle("Boom");
-		this.setExtendedState(MAXIMIZED_BOTH);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setVisible(true);
-		this.setResizable(false);
-	}
 }

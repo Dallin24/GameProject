@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.SpringLayout;
 
 import game.controller.Controller;
@@ -21,27 +22,26 @@ import game.controller.Controller;
 public class GamePanel extends JPanel
 {
 	private Controller app;
-	private JPanel fieldPanel;
-	private JPanel fieldBackground;
 
-	private JLabel[][] fieldGrid;
+	private String[][] dataGrid;
+	
+	private JTable gameFieldTable;
 
 	private SpringLayout layout;
-	private GridLayout fieldLayout;
+	private GridLayout gameFieldTableLayout;
 
 	public GamePanel(Controller app)
 	{
 		super();
-
 		this.app = app;
-		this.fieldPanel = new JPanel();
-		this.fieldBackground = new JPanel();
 		
-		this.fieldGrid = new JLabel[25][45];
+		this.dataGrid = new String[25][35];
+		
+		this.gameFieldTable = new JTable(25, 35);
 
 		this.layout = new SpringLayout();
 
-		this.fieldLayout = new GridLayout(fieldGrid.length, fieldGrid[0].length);
+		this.gameFieldTableLayout = new GridLayout(25, 35);
 
 		setupPanel();
 		setupListeners();
@@ -53,25 +53,24 @@ public class GamePanel extends JPanel
 		this.setLayout(layout);
 		this.setBackground(Color.BLACK);
 		
-		fieldBackground.add(fieldPanel);
-		fieldBackground.setBackground(Color.LIGHT_GRAY);
-		fieldPanel.setLayout(fieldLayout);
-		
-		
+		gameFieldTable.setRowHeight(30);
+		gameFieldTable.setPreferredSize(new Dimension(1330, 750));
+		gameFieldTable.setLayout(gameFieldTableLayout);
 		setupInitialGameField();
-
-		this.add(fieldBackground);
+ 
+		this.add(gameFieldTable);
 
 	}
 
 	private void setupInitialGameField()
 	{
-		for (int row = 0; row < fieldGrid.length; row++)
+		JLabel initialImage = new JLabel(new ImageIcon(getClass().getResource("/game/view/images/Red.png")));
+		for (int row = 0; row < dataGrid.length; row++)
 		{
-			for (int column = 0; column < fieldGrid[0].length; column++)
+			for (int column = 0; column < dataGrid[0].length; column++)
 			{
-				fieldPanel.add(new JLabel(new ImageIcon(getClass().getResource("/game/view/images/Red.png"))));
-				
+				dataGrid[row][column] = "Empty";
+				gameFieldTable.setValueAt(initialImage, row, column);
 			}
 		}
 	}
@@ -83,6 +82,8 @@ public class GamePanel extends JPanel
 
 	private void setupLayout()
 	{
-
+		layout.putConstraint(SpringLayout.WEST, gameFieldTable, 250, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, gameFieldTable, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, gameFieldTable, -250, SpringLayout.EAST, this);
 	}
 }
