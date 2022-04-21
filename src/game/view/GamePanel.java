@@ -25,36 +25,43 @@ public class GamePanel extends JPanel
 {
 	private Controller app;
 
+	private int rowCellCount;
+	private int columnCellCount;
+
 	private Cell[][] gridData;
-	
+
 	private JPanel gameFieldPanel;
 	private JTable gameFieldTable;
 
 	private SpringLayout layout;
 	private GridLayout gameFieldTableLayout;
-	
+
 	private JLabel test;
 
 	public GamePanel(Controller app)
 	{
 		super();
 		this.app = app;
-		
-		this.gridData = new Cell[25][35];
-		
+
+		setScreenProportions();
+
+		this.gridData = new Cell[rowCellCount][columnCellCount];
+
 		this.gameFieldPanel = new JPanel();
-		this.gameFieldTable = new JTable(25, 35)
-				{
-					public Class getColumnClass(int column)
-					{
-						return ImageIcon.class;
-					}
-				};
+		this.gameFieldTable = new JTable(rowCellCount, columnCellCount)
+		{
+			public Class getColumnClass(int column)
+			{
+				return ImageIcon.class;
+			}
+		};
 
 		this.layout = new SpringLayout();
+		layout.putConstraint(SpringLayout.WEST, gameFieldPanel, 0, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, gameFieldPanel, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, gameFieldPanel, 0, SpringLayout.EAST, this);
 
-
-		this.gameFieldTableLayout = new GridLayout(25, 35);
+		this.gameFieldTableLayout = new GridLayout(rowCellCount, columnCellCount);
 
 		setupPanel();
 		setupListeners();
@@ -64,35 +71,46 @@ public class GamePanel extends JPanel
 	private void setupPanel()
 	{
 		this.setLayout(layout);
-		this.setBackground(Color.BLACK);
+		this.setBackground(Color.DARK_GRAY);
 
 		setupInitialGameField();
+	}
+
+	private void setScreenProportions()
+	{
+		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+
+		int screenHeight = (int) size.getHeight();
+		int screenWidth = (int) size.getWidth();
+
+		columnCellCount = (int)(screenWidth / 38) - 18;
+		rowCellCount = (int)(screenHeight / 30) - 10;
 	}
 
 	private void setupInitialGameField()
 	{
 		gameFieldTable.setRowHeight(30);
-		gameFieldTable.setPreferredSize(new Dimension(1330, 750));
+		gameFieldTable.setPreferredSize(new Dimension(38 * columnCellCount, 30 * rowCellCount));
 		gameFieldTable.setLayout(gameFieldTableLayout);
 		gameFieldTable.setCellSelectionEnabled(false);
 		gameFieldTable.setGridColor(Color.BLACK);
 		gameFieldTable.setBackground(Color.BLACK);
 		gameFieldTable.setEnabled(false);
-		
+
 		ImageIcon initialImage = new ImageIcon(getClass().getResource("/game/view/images/Red.png"));
-		
+
 		for (int row = 0; row < gridData.length; row++)
 		{
 			for (int column = 0; column < gridData[0].length; column++)
 			{
 				gridData[row][column] = new Cell("Player", 90);
 				gameFieldTable.setValueAt(initialImage, row, column);
-				
+
 			}
 		}
-		
+
 		this.add(gameFieldPanel);
-		
+
 		gameFieldPanel.setBackground(Color.LIGHT_GRAY);
 		gameFieldPanel.add(gameFieldTable);
 	}
@@ -104,8 +122,5 @@ public class GamePanel extends JPanel
 
 	private void setupLayout()
 	{
-		layout.putConstraint(SpringLayout.WEST, gameFieldPanel, 353, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, gameFieldPanel, -353, SpringLayout.EAST, this);
-		layout.putConstraint(SpringLayout.SOUTH, gameFieldPanel, 0, SpringLayout.SOUTH, this);
 	}
 }
