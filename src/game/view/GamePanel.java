@@ -25,37 +25,21 @@ public class GamePanel extends JPanel
 {
 	private Controller app;
 
-<<<<<<< Updated upstream
-	private String[][] dataGrid;
-	
-=======
 	private Cell[][] gridData;
 	
 	private JPanel gameFieldPanel;
->>>>>>> Stashed changes
 	private JTable gameFieldTable;
 
 	private SpringLayout layout;
 	private GridLayout gameFieldTableLayout;
-<<<<<<< Updated upstream
-=======
 	
 	private JLabel test;
->>>>>>> Stashed changes
 
 	public GamePanel(Controller app)
 	{
 		super();
 		this.app = app;
 		
-<<<<<<< Updated upstream
-		this.dataGrid = new String[25][35];
-		
-		this.gameFieldTable = new JTable(25, 35);
-
-		this.layout = new SpringLayout();
-
-=======
 		this.gridData = new Cell[25][35];
 		
 		this.gameFieldPanel = new JPanel();
@@ -70,7 +54,6 @@ public class GamePanel extends JPanel
 		this.layout = new SpringLayout();
 
 
->>>>>>> Stashed changes
 		this.gameFieldTableLayout = new GridLayout(25, 35);
 
 		setupPanel();
@@ -82,31 +65,12 @@ public class GamePanel extends JPanel
 	{
 		this.setLayout(layout);
 		this.setBackground(Color.BLACK);
-<<<<<<< Updated upstream
-		
-		gameFieldTable.setRowHeight(30);
-		gameFieldTable.setPreferredSize(new Dimension(1330, 750));
-		gameFieldTable.setLayout(gameFieldTableLayout);
-		setupInitialGameField();
- 
-		this.add(gameFieldTable);
-=======
->>>>>>> Stashed changes
 
 		setupInitialGameField();
 	}
 
 	private void setupInitialGameField()
 	{
-<<<<<<< Updated upstream
-		JLabel initialImage = new JLabel(new ImageIcon(getClass().getResource("/game/view/images/Red.png")));
-		for (int row = 0; row < dataGrid.length; row++)
-		{
-			for (int column = 0; column < dataGrid[0].length; column++)
-			{
-				dataGrid[row][column] = "Empty";
-				gameFieldTable.setValueAt(initialImage, row, column);
-=======
 		gameFieldTable.setRowHeight(30);
 		gameFieldTable.setPreferredSize(new Dimension(1330, 750));
 		gameFieldTable.setLayout(gameFieldTableLayout);
@@ -124,7 +88,6 @@ public class GamePanel extends JPanel
 				gridData[row][column] = new Cell("Player", 90);
 				gameFieldTable.setValueAt(initialImage, row, column);
 				
->>>>>>> Stashed changes
 			}
 		}
 		
@@ -141,14 +104,8 @@ public class GamePanel extends JPanel
 
 	private void setupLayout()
 	{
-<<<<<<< Updated upstream
-		layout.putConstraint(SpringLayout.WEST, gameFieldTable, 250, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, gameFieldTable, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, gameFieldTable, -250, SpringLayout.EAST, this);
-=======
 		layout.putConstraint(SpringLayout.WEST, gameFieldPanel, 353, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.EAST, gameFieldPanel, -353, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.SOUTH, gameFieldPanel, 0, SpringLayout.SOUTH, this);
->>>>>>> Stashed changes
 	}
 }
