@@ -7,7 +7,10 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -16,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SpringLayout;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 import game.controller.Controller;
@@ -25,16 +29,19 @@ public class GamePanel extends JPanel
 {
 	private Controller app;
 
-	private int rowCellCount;
-	private int columnCellCount;
+	private int gameRowCellCount;
+	private int gameColumnCellCount;
 
-	private Cell[][] gridData;
+	private Cell redPlayer;
 
 	private JPanel gameFieldPanel;
-	private JTable gameFieldTable;
+	private JTable gameTable;
+	Cell blank;
 
 	private SpringLayout layout;
-	private GridLayout gameFieldTableLayout;
+	private GridLayout gameTableLayout;
+
+	public HashMap<Integer, Boolean> keysState;
 
 	public GamePanel(Controller app)
 	{
@@ -43,20 +50,26 @@ public class GamePanel extends JPanel
 
 		setScreenProportions();
 
-		this.gridData = new Cell[rowCellCount][columnCellCount];
+		this.redPlayer = new Cell("Red", "REDPLAYER", 90, 0, 0);
 
 		this.gameFieldPanel = new JPanel();
-		this.gameFieldTable = new JTable(rowCellCount, columnCellCount)
+		this.gameTable = new JTable(gameRowCellCount, gameColumnCellCount)
 		{
 			public Class getColumnClass(int column)
 			{
 				return ImageIcon.class;
 			}
 		};
+		this.blank = new Cell("BLANK");
 
 		this.layout = new SpringLayout();
+		this.gameTableLayout = new GridLayout(gameRowCellCount, gameColumnCellCount);
 
-		this.gameFieldTableLayout = new GridLayout(rowCellCount, columnCellCount);
+		this.keysState = new HashMap<Integer, Boolean>()
+		{
+			{
+			}
+		};
 
 		setupPanel();
 		setupListeners();
@@ -78,44 +91,167 @@ public class GamePanel extends JPanel
 		int screenHeight = (int) size.getHeight();
 		int screenWidth = (int) size.getWidth();
 
-		columnCellCount = (int) (screenWidth / 38) - 18;
-		rowCellCount = (int) (screenHeight / 30) - 10;
+		gameColumnCellCount = (int) (screenWidth / 38) - 18;
+		gameRowCellCount = (int) (screenHeight / 30) - 10;
 	}
 
 	private void setupInitialGameField()
 	{
-		gameFieldTable.setRowHeight(30);
-		gameFieldTable.setPreferredSize(new Dimension(38 * columnCellCount, 30 * rowCellCount));
-		gameFieldTable.setLayout(gameFieldTableLayout);
-		gameFieldTable.setCellSelectionEnabled(false);
-		gameFieldTable.setGridColor(Color.BLACK);
-		gameFieldTable.setBackground(Color.BLACK);
-		gameFieldTable.setEnabled(false);
+		gameTable.setRowHeight(30);
+		gameTable.setPreferredSize(new Dimension(38 * gameColumnCellCount, 30 * gameRowCellCount));
+		gameTable.setLayout(gameTableLayout);
+		gameTable.setCellSelectionEnabled(false);
+		gameTable.setGridColor(Color.BLACK);
+		gameTable.setBackground(Color.BLACK);
+		gameTable.setEnabled(false);
 
-		for (int row = 0; row < gridData.length; row++)
+		for (int row = 0; row < gameTable.getRowCount(); row++)
 		{
-			for (int column = 0; column < gridData[0].length; column++)
+			for (int column = 0; column < gameTable.getColumnCount(); column++)
 			{
-				gridData[row][column] = new Cell("Empty", 90);
-				gameFieldTable.setValueAt(new ImageIcon(getClass().getResource("/game/view/images/Bullet.png")), row, column);
+				gameTable.setValueAt(blank.getImage(), row, column);
 			}
 		}
 
-		int midHeight = gridData.length / 2;
-		int midWidth = (gridData[0].length / 2) / 2;
-		
-		gridData[midHeight][midWidth] = new Cell("Red", "Player", 90);
-		gameFieldTable.setValueAt(new ImageIcon(getClass().getResource("/game/view/images/Red.png")), midHeight, midWidth);
+		int midHeight = gameTable.getColumnCount() / 2;
+		int midWidth = (gameTable.getRowCount() / 2) / 2;
+
+		redPlayer.setLocation(midHeight, midWidth);
+		gameTable.setValueAt(redPlayer.getImage(), midHeight, midWidth);
 
 		this.add(gameFieldPanel);
 
 		gameFieldPanel.setBackground(Color.LIGHT_GRAY);
-		gameFieldPanel.add(gameFieldTable);
+		gameFieldPanel.add(gameTable);
 	}
-	
 
 	private void setupListeners()
 	{
+		this.addKeyListener(new KeyListener()
+		{
+			long lastMove = System.currentTimeMillis();
+			final long threshold = 250; // 500msec = half second
+			
+			@Override
+			public void keyTyped(KeyEvent keyboard)
+			{
+			}
+
+			@Override
+			public void keyReleased(KeyEvent keyboard)
+			{
+			}
+
+			@Override
+			public void keyPressed(KeyEvent keyboard)
+			{
+				long now = System.currentTimeMillis();
+				// e.getKeyChar()
+				switch (keyboard.getKeyChar())
+				{
+				case 'w':
+					
+					if (now - lastMove > threshold)
+					{
+						handleWKey();
+						lastMove = now;
+					}
+					break;
+				case 'a':
+					if (now - lastMove > threshold)
+					{
+						handleAKey();
+						lastMove = now;
+					}
+					break;
+				case 's':
+					if (now - lastMove > threshold)
+					{
+						handleSKey();
+						lastMove = now;
+					}
+					break;
+				case 'd':
+					if (now - lastMove > threshold)
+					{
+						handleDKey();
+						lastMove = now;
+					}
+					break;
+				}
+			}
+		});
+
+		this.setFocusable(true);
+		this.requestFocusInWindow();
+	}
+
+	private void handleWKey()
+	{
+		try
+		{
+			int currentRow = redPlayer.getRow();
+			int currentColumn = redPlayer.getColumn();
+
+			gameTable.setValueAt(redPlayer.getImage(), currentRow - 1, currentColumn);
+			redPlayer.setLocation(currentRow - 1, currentColumn);
+
+			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
+		} catch (IndexOutOfBoundsException error)
+		{
+
+		}
+	}
+
+	private void handleAKey()
+	{
+		try
+		{
+			int currentRow = redPlayer.getRow();
+			int currentColumn = redPlayer.getColumn();
+
+			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn - 1);
+			redPlayer.setLocation(currentRow, currentColumn - 1);
+
+			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
+		} catch (IndexOutOfBoundsException error)
+		{
+
+		}
+	}
+
+	private void handleSKey()
+	{
+		try
+		{
+			int currentRow = redPlayer.getRow();
+			int currentColumn = redPlayer.getColumn();
+
+			gameTable.setValueAt(redPlayer.getImage(), currentRow + 1, currentColumn);
+			redPlayer.setLocation(currentRow + 1, currentColumn);
+
+			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
+		} catch (IndexOutOfBoundsException error)
+		{
+
+		}
+	}
+
+	private void handleDKey()
+	{
+		try
+		{
+			int currentRow = redPlayer.getRow();
+			int currentColumn = redPlayer.getColumn();
+
+			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn + 1);
+			redPlayer.setLocation(currentRow, currentColumn + 1);
+
+			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
+		} catch (IndexOutOfBoundsException error)
+		{
+
+		}
 
 	}
 
