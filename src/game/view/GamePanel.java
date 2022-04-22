@@ -36,8 +36,6 @@ public class GamePanel extends JPanel
 	private SpringLayout layout;
 	private GridLayout gameFieldTableLayout;
 
-	private JLabel test;
-
 	public GamePanel(Controller app)
 	{
 		super();
@@ -57,9 +55,6 @@ public class GamePanel extends JPanel
 		};
 
 		this.layout = new SpringLayout();
-		layout.putConstraint(SpringLayout.WEST, gameFieldPanel, 0, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, gameFieldPanel, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, gameFieldPanel, 0, SpringLayout.EAST, this);
 
 		this.gameFieldTableLayout = new GridLayout(rowCellCount, columnCellCount);
 
@@ -83,8 +78,8 @@ public class GamePanel extends JPanel
 		int screenHeight = (int) size.getHeight();
 		int screenWidth = (int) size.getWidth();
 
-		columnCellCount = (int)(screenWidth / 38) - 18;
-		rowCellCount = (int)(screenHeight / 30) - 10;
+		columnCellCount = (int) (screenWidth / 38) - 18;
+		rowCellCount = (int) (screenHeight / 30) - 10;
 	}
 
 	private void setupInitialGameField()
@@ -97,23 +92,27 @@ public class GamePanel extends JPanel
 		gameFieldTable.setBackground(Color.BLACK);
 		gameFieldTable.setEnabled(false);
 
-		ImageIcon initialImage = new ImageIcon(getClass().getResource("/game/view/images/Red.png"));
-
 		for (int row = 0; row < gridData.length; row++)
 		{
 			for (int column = 0; column < gridData[0].length; column++)
 			{
-				gridData[row][column] = new Cell("Player", 90);
-				gameFieldTable.setValueAt(initialImage, row, column);
-
+				gridData[row][column] = new Cell("Empty", 90);
+				gameFieldTable.setValueAt(new ImageIcon(getClass().getResource("/game/view/images/Bullet.png")), row, column);
 			}
 		}
+
+		int midHeight = gridData.length / 2;
+		int midWidth = (gridData[0].length / 2) / 2;
+		
+		gridData[midHeight][midWidth] = new Cell("Red", "Player", 90);
+		gameFieldTable.setValueAt(new ImageIcon(getClass().getResource("/game/view/images/Red.png")), midHeight, midWidth);
 
 		this.add(gameFieldPanel);
 
 		gameFieldPanel.setBackground(Color.LIGHT_GRAY);
 		gameFieldPanel.add(gameFieldTable);
 	}
+	
 
 	private void setupListeners()
 	{
@@ -122,5 +121,8 @@ public class GamePanel extends JPanel
 
 	private void setupLayout()
 	{
+		layout.putConstraint(SpringLayout.WEST, gameFieldPanel, 0, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, gameFieldPanel, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, gameFieldPanel, 0, SpringLayout.EAST, this);
 	}
 }
