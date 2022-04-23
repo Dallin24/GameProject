@@ -3,17 +3,16 @@ package game.view;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SpringLayout;
-
 
 import game.controller.Controller;
 import game.model.Cell;
@@ -25,16 +24,19 @@ public class GamePanel extends JPanel
 	private int gameRowCellCount;
 	private int gameColumnCellCount;
 
+	private Cell[][] gameData;
+
 	private Cell redPlayer;
+	private Cell bluePlayer;
+	private Cell blank;
 
 	private JPanel gameFieldPanel;
 	private JTable gameTable;
-	private Cell blank;
+
+	private Set<Integer> pressedKeysWASD;
+	private Set<Integer> pressedKeysArrows;
 
 	private SpringLayout layout;
-	private GridLayout gameTableLayout;
-
-	public HashMap<Integer, Boolean> keysState;
 
 	public GamePanel(Controller app)
 	{
@@ -43,7 +45,10 @@ public class GamePanel extends JPanel
 
 		setScreenProportions();
 
+		this.gameData = new Cell[gameRowCellCount][gameColumnCellCount];
 		this.redPlayer = new Cell("RED", "PLAYER", 90, 0, 0);
+		this.bluePlayer = new Cell("BLUE", "PLAYER", 180, 0, 0);
+		this.blank = new Cell("BLANK");
 
 		this.gameFieldPanel = new JPanel();
 		this.gameTable = new JTable(gameRowCellCount, gameColumnCellCount)
@@ -54,16 +59,10 @@ public class GamePanel extends JPanel
 			}
 		};
 
-		this.blank = new Cell("BLANK");
+		this.pressedKeysWASD = new TreeSet<Integer>();
+		this.pressedKeysArrows = new TreeSet<Integer>();
 
 		this.layout = new SpringLayout();
-		this.gameTableLayout = new GridLayout(gameRowCellCount, gameColumnCellCount);
-
-		this.keysState = new HashMap<Integer, Boolean>()
-		{
-			{
-			}
-		};
 
 		setupPanel();
 		setupListeners();
@@ -93,7 +92,6 @@ public class GamePanel extends JPanel
 	{
 		gameTable.setRowHeight(30);
 		gameTable.setPreferredSize(new Dimension(38 * gameColumnCellCount, 30 * gameRowCellCount));
-		gameTable.setLayout(gameTableLayout);
 		gameTable.setCellSelectionEnabled(false);
 		gameTable.setGridColor(Color.BLACK);
 		gameTable.setBackground(Color.GREEN);
@@ -103,15 +101,21 @@ public class GamePanel extends JPanel
 		{
 			for (int column = 0; column < gameTable.getColumnCount(); column++)
 			{
+				gameData[row][column] = blank;
 				gameTable.setValueAt(blank.getImage(), row, column);
 			}
 		}
 
-		int midHeight = gameTable.getColumnCount() / 2;
-		int midWidth = (gameTable.getRowCount() / 2) / 2;
+		int midHeight = gameColumnCellCount / 2 - 2;
+		int midWidth = ((gameRowCellCount / 2) + 1) / 2;
 
 		redPlayer.setLocation(midHeight, midWidth);
+		bluePlayer.setLocation(midHeight, midWidth * 3);
+
+		gameData[midHeight][midWidth] = redPlayer;
+		gameData[midHeight][midWidth * 3] = bluePlayer;
 		gameTable.setValueAt(redPlayer.getImage(), midHeight, midWidth);
+		gameTable.setValueAt(bluePlayer.getImage(), midHeight, midWidth * 3);
 
 		this.add(gameFieldPanel);
 
@@ -134,44 +138,63 @@ public class GamePanel extends JPanel
 			@Override
 			public void keyReleased(KeyEvent keyboard)
 			{
+				pressedKeysWASD.remove(keyboard.getKeyCode());
+				pressedKeysArrows.remove(keyboard.getKeyCode());
+
 			}
 
 			@Override
 			public void keyPressed(KeyEvent keyboard)
 			{
-				long now = System.currentTimeMillis();
-				// e.getKeyChar()
-				switch (keyboard.getKeyChar())
-				{
-				case 'w':
+				int code = keyboard.getKeyCode();
+				Integer val = Integer.valueOf(code);
 
-					if (now - lastMove > threshold)
+				if (pressedKeysWASD.contains(val))
+				{
+
+				} else
+				{
+					switch (keyboard.getKeyChar())
 					{
+					case 'w':
 						handleWKey();
-						lastMove = now;
-					}
-					break;
-				case 'a':
-					if (now - lastMove > threshold)
-					{
+						break;
+					case 'a':
 						handleAKey();
-						lastMove = now;
-					}
-					break;
-				case 's':
-					if (now - lastMove > threshold)
-					{
+						break;
+					case 's':
 						handleSKey();
-						lastMove = now;
-					}
-					break;
-				case 'd':
-					if (now - lastMove > threshold)
-					{
+						break;
+					case 'd':
 						handleDKey();
-						lastMove = now;
+						break;
 					}
-					break;
+					pressedKeysWASD.add(keyboard.getKeyCode());
+				}
+				gameTable.updateUI();
+
+				if (pressedKeysArrows.contains(val))
+				{
+
+				} else
+				{
+					switch (keyboard.getKeyCode())
+					{
+					case 38:
+						handleUpKey();
+						break;
+					case 37:
+						handleLeftKey();
+						break;
+					case 40:
+						handleDownKey();
+						break;
+					case 39:
+						handleRightKey();
+						break;
+
+					}
+					pressedKeysArrows.add(keyboard.getKeyCode());
 				}
 				gameTable.updateUI();
 			}
@@ -180,22 +203,41 @@ public class GamePanel extends JPanel
 		this.setFocusable(true);
 		this.requestFocusInWindow();
 	}
+	
+	private void setupLayout()
+	{
+		layout.putConstraint(SpringLayout.WEST, gameFieldPanel, 0, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, gameFieldPanel, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, gameFieldPanel, 0, SpringLayout.EAST, this);
+	}
 
 	private void handleWKey()
 	{
 		int currentRow = redPlayer.getRow();
 		int currentColumn = redPlayer.getColumn();
 
+		redPlayer.setDirection(0);
+
+		if (bluePlayer.getRow() == currentRow - 1 && bluePlayer.getColumn() == currentColumn)
+		{
+			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = redPlayer;
+			return;
+		}
+
 		try
 		{
 			redPlayer.setLocation(currentRow - 1, currentColumn);
-			redPlayer.setDirection(0);
-			gameTable.setValueAt(redPlayer.getImage(), currentRow - 1, currentColumn);
 
+			gameTable.setValueAt(redPlayer.getImage(), currentRow - 1, currentColumn);
+			gameData[currentRow - 1][currentColumn] = redPlayer;
 			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = blank;
 		} catch (IndexOutOfBoundsException error)
 		{
 			redPlayer.setLocation(currentRow, currentColumn);
+			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = redPlayer;
 		}
 	}
 
@@ -204,16 +246,28 @@ public class GamePanel extends JPanel
 		int currentRow = redPlayer.getRow();
 		int currentColumn = redPlayer.getColumn();
 
+		redPlayer.setDirection(270);
+
+		if (bluePlayer.getRow() == currentRow && bluePlayer.getColumn() == currentColumn - 1)
+		{
+			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = redPlayer;
+			return;
+		}
+
 		try
 		{
 			redPlayer.setLocation(currentRow, currentColumn - 1);
-			redPlayer.setDirection(270);
-			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn - 1);
 
+			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn - 1);
+			gameData[currentRow][currentColumn - 1] = redPlayer;
 			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = blank;
 		} catch (IndexOutOfBoundsException error)
 		{
 			redPlayer.setLocation(currentRow, currentColumn);
+			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = redPlayer;
 		}
 	}
 
@@ -222,16 +276,28 @@ public class GamePanel extends JPanel
 		int currentRow = redPlayer.getRow();
 		int currentColumn = redPlayer.getColumn();
 
+		redPlayer.setDirection(180);
+
+		if (bluePlayer.getRow() == currentRow + 1 && bluePlayer.getColumn() == currentColumn)
+		{
+			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = redPlayer;
+			return;
+		}
+
 		try
 		{
 			redPlayer.setLocation(currentRow + 1, currentColumn);
-			redPlayer.setDirection(180);
-			gameTable.setValueAt(redPlayer.getImage(), currentRow + 1, currentColumn);
 
+			gameTable.setValueAt(redPlayer.getImage(), currentRow + 1, currentColumn);
+			gameData[currentRow + 1][currentColumn] = redPlayer;
 			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = blank;
 		} catch (IndexOutOfBoundsException error)
 		{
 			redPlayer.setLocation(currentRow, currentColumn);
+			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = redPlayer;
 		}
 	}
 
@@ -240,30 +306,165 @@ public class GamePanel extends JPanel
 		int currentRow = redPlayer.getRow();
 		int currentColumn = redPlayer.getColumn();
 
+		redPlayer.setDirection(90);
+
+		if (bluePlayer.getRow() == currentRow && bluePlayer.getColumn() == currentColumn + 1)
+		{
+			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = redPlayer;
+			return;
+		}
+
 		try
 		{
 
 			redPlayer.setLocation(currentRow, currentColumn + 1);
-			redPlayer.setDirection(90);
-			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn + 1);
 
+			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn + 1);
+			gameData[currentRow][currentColumn + 1] = redPlayer;
 			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = blank;
 		} catch (IndexOutOfBoundsException error)
 		{
 			redPlayer.setLocation(currentRow, currentColumn);
+			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = redPlayer;
 		}
 
 	}
 
-	public void checkCells()
+	private void handleUpKey()
 	{
+		int currentRow = bluePlayer.getRow();
+		int currentColumn = bluePlayer.getColumn();
 
+		bluePlayer.setDirection(0);
+
+		if (redPlayer.getRow() == currentRow - 1 && redPlayer.getColumn() == currentColumn)
+		{
+			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = bluePlayer;
+			return;
+		}
+
+		try
+		{
+			bluePlayer.setLocation(currentRow - 1, currentColumn);
+
+			gameTable.setValueAt(bluePlayer.getImage(), currentRow - 1, currentColumn);
+			gameData[currentRow - 1][currentColumn] = bluePlayer;
+			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = blank;
+		} catch (IndexOutOfBoundsException error)
+		{
+			bluePlayer.setLocation(currentRow, currentColumn);
+			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = bluePlayer;
+		}
 	}
 
-	private void setupLayout()
+	private void handleLeftKey()
 	{
-		layout.putConstraint(SpringLayout.WEST, gameFieldPanel, 0, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, gameFieldPanel, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, gameFieldPanel, 0, SpringLayout.EAST, this);
+		int currentRow = bluePlayer.getRow();
+		int currentColumn = bluePlayer.getColumn();
+
+		bluePlayer.setDirection(270);
+
+		if (redPlayer.getRow() == currentRow && redPlayer.getColumn() == currentColumn - 1)
+		{
+			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = bluePlayer;
+			return;
+		}
+
+		try
+		{
+			bluePlayer.setLocation(currentRow, currentColumn - 1);
+			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn - 1);
+			gameData[currentRow][currentColumn - 1] = bluePlayer;
+			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = blank;
+		} catch (IndexOutOfBoundsException error)
+		{
+			bluePlayer.setLocation(currentRow, currentColumn);
+			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = bluePlayer;
+		}
+	}
+
+	private void handleDownKey()
+	{
+		int currentRow = bluePlayer.getRow();
+		int currentColumn = bluePlayer.getColumn();
+
+		bluePlayer.setDirection(180);
+
+		if (redPlayer.getRow() == currentRow + 1 && redPlayer.getColumn() == currentColumn)
+		{
+			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = bluePlayer;
+			return;
+		}
+
+		try
+		{
+			bluePlayer.setLocation(currentRow + 1, currentColumn);
+			gameTable.setValueAt(bluePlayer.getImage(), currentRow + 1, currentColumn);
+			gameData[currentRow + 1][currentColumn] = bluePlayer;
+			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = blank;
+		} catch (IndexOutOfBoundsException error)
+		{
+			bluePlayer.setLocation(currentRow, currentColumn);
+			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = bluePlayer;
+		}
+	}
+
+	private void handleRightKey()
+	{
+		int currentRow = bluePlayer.getRow();
+		int currentColumn = bluePlayer.getColumn();
+
+		bluePlayer.setDirection(90);
+
+		if (redPlayer.getRow() == currentRow && redPlayer.getColumn() == currentColumn + 1)
+		{
+			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = bluePlayer;
+			return;
+		}
+
+		try
+		{
+
+			bluePlayer.setLocation(currentRow, currentColumn + 1);
+			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn + 1);
+			gameData[currentRow][currentColumn + 1] = bluePlayer;
+			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = blank;
+		} catch (IndexOutOfBoundsException error)
+		{
+			bluePlayer.setLocation(currentRow, currentColumn);
+			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
+			gameData[currentRow][currentColumn] = bluePlayer;
+		}
+
+	}
+	
+	public void fireBullets()
+	{
+		
+	}
+
+	public void checkCells()
+	{
+		for(int row = 0; row < gameData.length; row++)
+		{
+			for(int column = 0; column < gameData[0].length; column++)
+			{
+				
+			}
+		}
 	}
 }

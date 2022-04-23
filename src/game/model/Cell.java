@@ -48,7 +48,7 @@ public class Cell
 				cellImage = new ImageIcon(getClass().getResource("/game/view/images/RedRightNormal.png"));
 			} else
 			{
-				cellImage = new ImageIcon(getClass().getResource("/game/view/images/BlueRightNormal.png"));
+				cellImage = new ImageIcon(getClass().getResource("/game/view/images/BlueLeftNormal.png"));
 			}
 
 			break;
@@ -80,7 +80,21 @@ public class Cell
 			}
 		} else
 		{
-
+			switch (direction)
+			{
+			case 0:
+				playerImage = new ImageIcon(getClass().getResource("/game/view/images/BlueUpNormal.png"));
+				break;
+			case 90:
+				playerImage = new ImageIcon(getClass().getResource("/game/view/images/BlueRightNormal.png"));
+				break;
+			case 180:
+				playerImage = new ImageIcon(getClass().getResource("/game/view/images/BlueDownNormal.png"));
+				break;
+			case 270:
+				playerImage = new ImageIcon(getClass().getResource("/game/view/images/BlueLeftNormal.png"));
+				break;
+			}
 		}
 		
 		this.cellImage = playerImage;

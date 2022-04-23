@@ -35,4 +35,9 @@ public class GameFrame extends JFrame
 	{
 		this.panel.checkCells();
 	}
+	
+	public void fireBullets()
+	{
+		this.panel.fireBullets();
+	}
 }

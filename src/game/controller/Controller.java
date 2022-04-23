@@ -5,16 +5,17 @@ import game.view.GameFrame;
 public class Controller
 {
 	private GameFrame display;
-	
+
 	public Controller()
 	{
 		this.display = new GameFrame(this);
 	}
-	
-	public void start() 
+
+	public void start()
 	{
-		while(true)
+		while (true)
 		{
+			this.display.fireBullets();
 			this.display.checkCells();
 		}
 	}
