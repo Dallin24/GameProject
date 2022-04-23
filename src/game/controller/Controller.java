@@ -13,9 +13,13 @@ public class Controller
 
 	public void start()
 	{
+		long lastMove = System.currentTimeMillis();
+		final long threshold = 1000; 
+		
 		while (true)
 		{
-			this.display.fireBullets();
+			lastMove = this.display.getPanelLastMove();
+			this.display.fireBullets(lastMove, threshold);
 			this.display.checkCells();
 		}
 	}

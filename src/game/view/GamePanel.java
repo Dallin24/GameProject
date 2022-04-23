@@ -29,6 +29,8 @@ public class GamePanel extends JPanel
 	private Cell redPlayer;
 	private Cell bluePlayer;
 	private Cell blank;
+	
+	private Long panelLastMove;
 
 	private JPanel gameFieldPanel;
 	private JTable gameTable;
@@ -59,6 +61,7 @@ public class GamePanel extends JPanel
 			}
 		};
 
+		this.panelLastMove = System.currentTimeMillis();
 		this.pressedKeysWASD = new TreeSet<Integer>();
 		this.pressedKeysArrows = new TreeSet<Integer>();
 
@@ -452,9 +455,21 @@ public class GamePanel extends JPanel
 
 	}
 	
-	public void fireBullets()
+	public void fireBullets(long lastMove, long threshold)
 	{
 		
+		long now = System.currentTimeMillis();
+		
+		if (now - lastMove > threshold)
+		{
+			System.out.println("FIRE");
+			panelLastMove = now;
+		}
+	}
+	
+	public long getPanelLastMove()
+	{
+		return panelLastMove;
 	}
 
 	public void checkCells()
