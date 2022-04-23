@@ -2,25 +2,18 @@ package game.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SpringLayout;
-import javax.swing.Timer;
-import javax.swing.table.DefaultTableModel;
+
 
 import game.controller.Controller;
 import game.model.Cell;
@@ -37,7 +30,6 @@ public class GamePanel extends JPanel
 	private JPanel gameFieldPanel;
 	private JTable gameTable;
 	private Cell blank;
-	
 
 	private SpringLayout layout;
 	private GridLayout gameTableLayout;
@@ -51,7 +43,7 @@ public class GamePanel extends JPanel
 
 		setScreenProportions();
 
-		this.redPlayer = new Cell("Red", "REDPLAYER", 90, 0, 0);
+		this.redPlayer = new Cell("RED", "PLAYER", 90, 0, 0);
 
 		this.gameFieldPanel = new JPanel();
 		this.gameTable = new JTable(gameRowCellCount, gameColumnCellCount)
@@ -61,8 +53,7 @@ public class GamePanel extends JPanel
 				return ImageIcon.class;
 			}
 		};
-		
-		
+
 		this.blank = new Cell("BLANK");
 
 		this.layout = new SpringLayout();
@@ -134,7 +125,7 @@ public class GamePanel extends JPanel
 		{
 			long lastMove = System.currentTimeMillis();
 			final long threshold = 100; // 500msec = half second
-			
+
 			@Override
 			public void keyTyped(KeyEvent keyboard)
 			{
@@ -153,7 +144,7 @@ public class GamePanel extends JPanel
 				switch (keyboard.getKeyChar())
 				{
 				case 'w':
-					
+
 					if (now - lastMove > threshold)
 					{
 						handleWKey();
@@ -192,76 +183,81 @@ public class GamePanel extends JPanel
 
 	private void handleWKey()
 	{
+		int currentRow = redPlayer.getRow();
+		int currentColumn = redPlayer.getColumn();
+
 		try
 		{
-			int currentRow = redPlayer.getRow();
-			int currentColumn = redPlayer.getColumn();
-
-			gameTable.setValueAt(redPlayer.getImage(), currentRow - 1, currentColumn);
 			redPlayer.setLocation(currentRow - 1, currentColumn);
+			redPlayer.setDirection(0);
+			gameTable.setValueAt(redPlayer.getImage(), currentRow - 1, currentColumn);
 
 			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
 		} catch (IndexOutOfBoundsException error)
 		{
-
+			redPlayer.setLocation(currentRow, currentColumn);
 		}
 	}
 
 	private void handleAKey()
 	{
+		int currentRow = redPlayer.getRow();
+		int currentColumn = redPlayer.getColumn();
+
 		try
 		{
-			int currentRow = redPlayer.getRow();
-			int currentColumn = redPlayer.getColumn();
-
-			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn - 1);
 			redPlayer.setLocation(currentRow, currentColumn - 1);
+			redPlayer.setDirection(270);
+			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn - 1);
 
 			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
 		} catch (IndexOutOfBoundsException error)
 		{
-
+			redPlayer.setLocation(currentRow, currentColumn);
 		}
 	}
 
 	private void handleSKey()
 	{
+		int currentRow = redPlayer.getRow();
+		int currentColumn = redPlayer.getColumn();
+
 		try
 		{
-			int currentRow = redPlayer.getRow();
-			int currentColumn = redPlayer.getColumn();
-
-			gameTable.setValueAt(redPlayer.getImage(), currentRow + 1, currentColumn);
 			redPlayer.setLocation(currentRow + 1, currentColumn);
+			redPlayer.setDirection(180);
+			gameTable.setValueAt(redPlayer.getImage(), currentRow + 1, currentColumn);
 
 			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
 		} catch (IndexOutOfBoundsException error)
 		{
-
+			redPlayer.setLocation(currentRow, currentColumn);
 		}
 	}
 
 	private void handleDKey()
 	{
+		int currentRow = redPlayer.getRow();
+		int currentColumn = redPlayer.getColumn();
+
 		try
 		{
-			int currentRow = redPlayer.getRow();
-			int currentColumn = redPlayer.getColumn();
 
-			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn + 1);
 			redPlayer.setLocation(currentRow, currentColumn + 1);
+			redPlayer.setDirection(90);
+			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn + 1);
 
 			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
 		} catch (IndexOutOfBoundsException error)
 		{
-
+			redPlayer.setLocation(currentRow, currentColumn);
 		}
 
 	}
-	
+
 	public void checkCells()
 	{
-		
+
 	}
 
 	private void setupLayout()
