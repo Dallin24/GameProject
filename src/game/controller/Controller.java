@@ -1,7 +1,5 @@
 package game.controller;
 
-import java.awt.event.KeyEvent;
-
 import game.view.GameFrame;
 
 public class Controller
@@ -10,10 +8,14 @@ public class Controller
 	
 	public Controller()
 	{
-		display = new GameFrame(this);
+		this.display = new GameFrame(this);
 	}
 	
 	public void start() 
 	{
+		while(true)
+		{
+			this.display.checkCells();
+		}
 	}
 }

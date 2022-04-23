@@ -36,7 +36,8 @@ public class GamePanel extends JPanel
 
 	private JPanel gameFieldPanel;
 	private JTable gameTable;
-	Cell blank;
+	private Cell blank;
+	
 
 	private SpringLayout layout;
 	private GridLayout gameTableLayout;
@@ -60,6 +61,8 @@ public class GamePanel extends JPanel
 				return ImageIcon.class;
 			}
 		};
+		
+		
 		this.blank = new Cell("BLANK");
 
 		this.layout = new SpringLayout();
@@ -102,7 +105,7 @@ public class GamePanel extends JPanel
 		gameTable.setLayout(gameTableLayout);
 		gameTable.setCellSelectionEnabled(false);
 		gameTable.setGridColor(Color.BLACK);
-		gameTable.setBackground(Color.BLACK);
+		gameTable.setBackground(Color.GREEN);
 		gameTable.setEnabled(false);
 
 		for (int row = 0; row < gameTable.getRowCount(); row++)
@@ -130,7 +133,7 @@ public class GamePanel extends JPanel
 		this.addKeyListener(new KeyListener()
 		{
 			long lastMove = System.currentTimeMillis();
-			final long threshold = 250; // 500msec = half second
+			final long threshold = 100; // 500msec = half second
 			
 			@Override
 			public void keyTyped(KeyEvent keyboard)
@@ -179,6 +182,7 @@ public class GamePanel extends JPanel
 					}
 					break;
 				}
+				gameTable.updateUI();
 			}
 		});
 
@@ -253,6 +257,11 @@ public class GamePanel extends JPanel
 
 		}
 
+	}
+	
+	public void checkCells()
+	{
+		
 	}
 
 	private void setupLayout()

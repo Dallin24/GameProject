@@ -30,4 +30,9 @@ public class GameFrame extends JFrame
 		this.setVisible(true);
 		this.setResizable(false);
 	}
+	
+	public void checkCells()
+	{
+		this.panel.checkCells();
+	}
 }
