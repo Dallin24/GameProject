@@ -50,7 +50,9 @@ public class Cell
 			{
 				cellImage = new ImageIcon(getClass().getResource("/game/view/images/BlueLeftNormal.png"));
 			}
-
+			break;
+		case "BULLET":
+			cellImage = new ImageIcon(getClass().getResource("/game/view/images/BulletNormal.png"));
 			break;
 		}
 

@@ -29,8 +29,8 @@ public class GamePanel extends JPanel
 	private Cell redPlayer;
 	private Cell bluePlayer;
 	private Cell blank;
-	
-	private Long panelLastMove;
+
+	private Long panelLastShot;
 
 	private JPanel gameFieldPanel;
 	private JTable gameTable;
@@ -49,7 +49,7 @@ public class GamePanel extends JPanel
 
 		this.gameData = new Cell[gameRowCellCount][gameColumnCellCount];
 		this.redPlayer = new Cell("RED", "PLAYER", 90, 0, 0);
-		this.bluePlayer = new Cell("BLUE", "PLAYER", 180, 0, 0);
+		this.bluePlayer = new Cell("BLUE", "PLAYER", 270, 0, 0);
 		this.blank = new Cell("BLANK");
 
 		this.gameFieldPanel = new JPanel();
@@ -61,7 +61,7 @@ public class GamePanel extends JPanel
 			}
 		};
 
-		this.panelLastMove = System.currentTimeMillis();
+		this.panelLastShot = System.currentTimeMillis();
 		this.pressedKeysWASD = new TreeSet<Integer>();
 		this.pressedKeysArrows = new TreeSet<Integer>();
 
@@ -130,7 +130,7 @@ public class GamePanel extends JPanel
 	{
 		this.addKeyListener(new KeyListener()
 		{
-			long lastMove = System.currentTimeMillis();
+			long LastShot = System.currentTimeMillis();
 			final long threshold = 100; // 500msec = half second
 
 			@Override
@@ -206,7 +206,7 @@ public class GamePanel extends JPanel
 		this.setFocusable(true);
 		this.requestFocusInWindow();
 	}
-	
+
 	private void setupLayout()
 	{
 		layout.putConstraint(SpringLayout.WEST, gameFieldPanel, 0, SpringLayout.WEST, this);
@@ -454,31 +454,134 @@ public class GamePanel extends JPanel
 		}
 
 	}
-	
-	public void fireBullets(long lastMove, long threshold)
+
+	public void fireBullets(long LastShot, long threshold)
 	{
-		
+
 		long now = System.currentTimeMillis();
-		
-		if (now - lastMove > threshold)
+
+		if (now - LastShot > threshold)
 		{
-			System.out.println("FIRE");
-			panelLastMove = now;
+			// System.out.println("FIRE");
+
+			int blueRow = bluePlayer.getRow();
+			int blueColumn = bluePlayer.getColumn();
+			int blueDirection = bluePlayer.getDirection();
+
+			Cell blueBullet = new Cell("BULLET", blueDirection);
+
+			// System.out.println(blueDirection);
+			switch (blueDirection)
+			{
+			case (0):
+				try
+				{
+					gameTable.setValueAt(blueBullet.getImage(), blueRow - 1, blueColumn);
+					gameData[blueRow - 1][blueColumn] = blueBullet;
+				} catch (ArrayIndexOutOfBoundsException error)
+				{
+
+				}
+				break;
+			case (90):
+				try
+				{
+					gameTable.setValueAt(blueBullet.getImage(), blueRow, blueColumn + 1);
+					gameData[blueRow][blueColumn + 1] = blueBullet;
+				} catch (ArrayIndexOutOfBoundsException error)
+				{
+
+				}
+				break;
+			case (180):
+				try
+				{
+					gameTable.setValueAt(blueBullet.getImage(), blueRow + 1, blueColumn);
+					gameData[blueRow + 1][blueColumn] = blueBullet;
+				} catch (ArrayIndexOutOfBoundsException error)
+				{
+
+				}
+				break;
+			case (270):
+				try
+				{
+					gameTable.setValueAt(blueBullet.getImage(), blueRow, blueColumn - 1);
+					gameData[blueRow][blueColumn - 1] = blueBullet;
+				} catch (ArrayIndexOutOfBoundsException error)
+				{
+
+				}
+				break;
+			}
+			
+			int redRow = redPlayer.getRow();
+			int redColumn = redPlayer.getColumn();
+			int redDirection = redPlayer.getDirection();
+
+			Cell redBullet = new Cell("BULLET", redDirection);
+
+			//System.out.println(redDirection);
+			switch (redDirection)
+			{
+			case (0):
+				try
+				{
+					gameTable.setValueAt(redBullet.getImage(), redRow - 1, redColumn);
+					gameData[redRow - 1][redColumn] = redBullet;
+				} catch (ArrayIndexOutOfBoundsException error)
+				{
+
+				}
+				break;
+			case (90):
+				try
+				{
+					gameTable.setValueAt(redBullet.getImage(), redRow, redColumn + 1);
+					gameData[redRow][redColumn + 1] = redBullet;
+				} catch (ArrayIndexOutOfBoundsException error)
+				{
+
+				}
+				break;
+			case (180):
+				try
+				{
+					gameTable.setValueAt(redBullet.getImage(), redRow + 1, redColumn);
+					gameData[redRow + 1][redColumn] = redBullet;
+				} catch (ArrayIndexOutOfBoundsException error)
+				{
+
+				}
+				break;
+			case (270):
+				try
+				{
+					gameTable.setValueAt(redBullet.getImage(), redRow, redColumn - 1);
+					gameData[redRow][redColumn - 1] = redBullet;
+				} catch (ArrayIndexOutOfBoundsException error)
+				{
+
+				}
+				break;
+			}
+			
+			panelLastShot = now;
 		}
 	}
-	
-	public long getPanelLastMove()
+
+	public long getPanelLastShot()
 	{
-		return panelLastMove;
+		return panelLastShot;
 	}
 
 	public void checkCells()
 	{
-		for(int row = 0; row < gameData.length; row++)
+		for (int row = 0; row < gameData.length; row++)
 		{
-			for(int column = 0; column < gameData[0].length; column++)
+			for (int column = 0; column < gameData[0].length; column++)
 			{
-				
+
 			}
 		}
 	}

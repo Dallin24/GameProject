@@ -41,8 +41,8 @@ public class GameFrame extends JFrame
 		this.panel.fireBullets(lastMove, threshold);
 	}
 	
-	public long getPanelLastMove()
+	public long getPanelLastShot()
 	{
-		return this.panel.getPanelLastMove();
+		return this.panel.getPanelLastShot();
 	}
 }
