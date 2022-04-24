@@ -16,11 +16,15 @@ public class Controller
 		long lastShot = System.currentTimeMillis();
 		final long threshold = 1000; 
 		
+		long lastCycle = System.currentTimeMillis();
+		final long cycleThreshold = 1000; 
+		
 		while (true)
 		{
 			lastShot = this.display.getPanelLastShot();
+			lastCycle = this.display.getPanelLastCycle();
 			this.display.fireBullets(lastShot, threshold);
-			this.display.checkCells();
+			this.display.checkCells(lastCycle, cycleThreshold);
 		}
 	}
 }

@@ -31,6 +31,7 @@ public class GamePanel extends JPanel
 	private Cell blank;
 
 	private Long panelLastShot;
+	private Long panelLastCycle;
 
 	private JPanel gameFieldPanel;
 	private JTable gameTable;
@@ -62,6 +63,8 @@ public class GamePanel extends JPanel
 		};
 
 		this.panelLastShot = System.currentTimeMillis();
+		this.panelLastCycle = System.currentTimeMillis();
+
 		this.pressedKeysWASD = new TreeSet<Integer>();
 		this.pressedKeysArrows = new TreeSet<Integer>();
 
@@ -455,12 +458,12 @@ public class GamePanel extends JPanel
 
 	}
 
-	public void fireBullets(long LastShot, long threshold)
+	public void fireBullets(long lastShot, long threshold)
 	{
 
 		long now = System.currentTimeMillis();
 
-		if (now - LastShot > threshold)
+		if (now - lastShot > threshold)
 		{
 			// System.out.println("FIRE");
 
@@ -514,14 +517,14 @@ public class GamePanel extends JPanel
 				}
 				break;
 			}
-			
+
 			int redRow = redPlayer.getRow();
 			int redColumn = redPlayer.getColumn();
 			int redDirection = redPlayer.getDirection();
 
 			Cell redBullet = new Cell("BULLET", redDirection);
 
-			//System.out.println(redDirection);
+			// System.out.println(redDirection);
 			switch (redDirection)
 			{
 			case (0):
@@ -565,7 +568,7 @@ public class GamePanel extends JPanel
 				}
 				break;
 			}
-			
+
 			panelLastShot = now;
 		}
 	}
@@ -575,14 +578,48 @@ public class GamePanel extends JPanel
 		return panelLastShot;
 	}
 
-	public void checkCells()
+	public void checkCells(long lastCycle, long cycleThreshold)
 	{
-		for (int row = 0; row < gameData.length; row++)
-		{
-			for (int column = 0; column < gameData[0].length; column++)
-			{
+		long now = System.currentTimeMillis();
 
+		if (now - lastCycle > cycleThreshold)
+		{
+			Cell currentCell;
+//			long lastCycleD = System.currentTimeMillis();
+//			final long cycleThresholdD = 1000; 
+			for (int row = 0; row < gameData.length; row++)
+			{
+				for (int column = 0; column < gameData[0].length; column++)
+				{
+					currentCell = gameData[row][column];
+					if (currentCell.getCellType().equals("BULLET"))
+					{
+						switch (currentCell.getDirection())
+						{
+						case 0:
+							gameTable.setValueAt(currentCell.getImage(), row - 1, column);
+							gameTable.setValueAt(blank.getImage(), row, column);
+							gameData[row - 1][column] = currentCell;
+							break;
+						case 90:
+							break;
+						case 180:
+							break;
+						case 270:
+							break;
+						}
+					}
+
+				}
 			}
+			panelLastCycle = now;
+
 		}
+
+	}
+
+	public long getPanelLastCycle()
+	{
+		return panelLastCycle;
 	}
 }

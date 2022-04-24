@@ -31,9 +31,9 @@ public class GameFrame extends JFrame
 		this.setResizable(false);
 	}
 	
-	public void checkCells()
+	public void checkCells(long lastCycle, long cycleThreshold)
 	{
-		this.panel.checkCells();
+		this.panel.checkCells(lastCycle, cycleThreshold);
 	}
 	
 	public void fireBullets(long lastMove, long threshold)
@@ -44,5 +44,10 @@ public class GameFrame extends JFrame
 	public long getPanelLastShot()
 	{
 		return this.panel.getPanelLastShot();
+	}
+	
+	public long getPanelLastCycle()
+	{
+		return this.panel.getPanelLastCycle();
 	}
 }
