@@ -29,9 +29,13 @@ public class GamePanel extends JPanel
 	private Cell redPlayer;
 	private Cell bluePlayer;
 	private Cell blank;
+	
+	private GameInfo redPlayerData;
+	private GameInfo bluePlayerData;
 
 	private Long panelLastShot;
 	private Long panelLastCycle;
+
 
 	private JPanel gameFieldPanel;
 	private JTable gameTable;
@@ -54,6 +58,9 @@ public class GamePanel extends JPanel
 		this.bluePlayer = new Cell("BLUE", "PLAYER", 270, 0, 0);
 		this.blank = new Cell("BLANK");
 
+		this.redPlayerData = new GameInfo(redPlayer);
+		this.bluePlayerData = new GameInfo(bluePlayer);
+		
 		this.gameFieldPanel = new JPanel();
 		this.gameTable = new JTable(gameRowCellCount, gameColumnCellCount)
 		{
@@ -133,6 +140,8 @@ public class GamePanel extends JPanel
 
 		gameFieldPanel.setBackground(Color.LIGHT_GRAY);
 		gameFieldPanel.add(gameTable);
+		gameFieldPanel.add(redPlayerData);
+		gameFieldPanel.add(bluePlayerData);
 	}
 
 	private void setupListeners()
@@ -618,6 +627,22 @@ public class GamePanel extends JPanel
 
 					if (currentCell.getCellType().equals("BULLET") && !currentCell.getCellChecked())
 					{
+						if(redPlayer.getRow() == row && redPlayer.getColumn() == column)
+						{
+							gameData[row][column] = redPlayer;
+							gameTable.setValueAt(redPlayer.getImage(), row, column);
+							redPlayerData.updatePlayerData("HEALTH", -10);
+							return;
+						}
+						
+						if(bluePlayer.getRow() == row && bluePlayer.getColumn() == column)
+						{
+							gameData[row][column] = bluePlayer;
+							gameTable.setValueAt(bluePlayer.getImage(), row, column);
+							bluePlayerData.updatePlayerData("HEALTH", -10);
+							return;
+						}
+						
 						Cell newBlankCell = new Cell("BLANK");
 						switch (currentCell.getDirection())
 						{
@@ -683,7 +708,10 @@ public class GamePanel extends JPanel
 							break;
 						}
 						
+						
 					}
+					
+					
 
 				}
 			}

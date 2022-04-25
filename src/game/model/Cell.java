@@ -11,6 +11,7 @@ public class Cell
 
 	private ImageIcon cellImage;
 
+	private int cellHealth;
 	private int cellDirection;
 	private int cellRow;
 	private int cellColumn;
@@ -35,6 +36,7 @@ public class Cell
 		this.cellType = cellType;
 		this.cellDirection = cellDirection;
 		this.cellImage = setImageIcon(cellType);
+		this.cellHealth = 100;
 	}
 
 	private ImageIcon setImageIcon(String cellType)
@@ -129,6 +131,11 @@ public class Cell
 		this.cellRow = row;
 		this.cellColumn = column;
 	}
+	
+	public void setHealth(int healthPoints)
+	{
+		this.cellHealth = healthPoints;
+	}
 
 	public ImageIcon getImage()
 	{
@@ -158,5 +165,15 @@ public class Cell
 	public int getColumn()
 	{
 		return this.cellColumn;
+	}
+	
+	public int getHealth()
+	{
+		return this.cellHealth;
+	}
+	
+	public String getPlayerName()
+	{
+		return this.cellName;
 	}
 }
