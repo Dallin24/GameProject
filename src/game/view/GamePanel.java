@@ -44,7 +44,8 @@ public class GamePanel extends JPanel
 	private Set<Integer> pressedKeysWASD;
 	private Set<Integer> pressedKeysArrows;
 
-	private SpringLayout layout;
+	private SpringLayout overallLayout;
+	private SpringLayout fieldLayout;
 
 	public GamePanel(Controller app)
 	{
@@ -57,8 +58,6 @@ public class GamePanel extends JPanel
 		this.redPlayer = new Cell("RED", "PLAYER", 90, 0, 0);
 		this.bluePlayer = new Cell("BLUE", "PLAYER", 270, 0, 0);
 		this.blank = new Cell("BLANK");
-
-		this.redPlayerData = new GameInfo(redPlayer);
 		this.bluePlayerData = new GameInfo(bluePlayer);
 		
 		this.gameFieldPanel = new JPanel();
@@ -77,21 +76,34 @@ public class GamePanel extends JPanel
 		this.pressedKeysWASD = new TreeSet<Integer>();
 		this.pressedKeysArrows = new TreeSet<Integer>();
 
-		this.layout = new SpringLayout();
+		this.overallLayout = new SpringLayout();
+		overallLayout.putConstraint(SpringLayout.NORTH, gameFieldPanel, 0, SpringLayout.NORTH, this);
+		this.fieldLayout = new SpringLayout();
+		fieldLayout.putConstraint(SpringLayout.NORTH, gameTable, 260, SpringLayout.NORTH, gameFieldPanel);
+		fieldLayout.putConstraint(SpringLayout.WEST, gameTable, 359, SpringLayout.WEST, gameFieldPanel);
+		fieldLayout.putConstraint(SpringLayout.SOUTH, gameTable, 0, SpringLayout.SOUTH, gameFieldPanel);
+		fieldLayout.putConstraint(SpringLayout.EAST, gameTable, -359, SpringLayout.EAST, gameFieldPanel);
+		fieldLayout.putConstraint(SpringLayout.EAST, bluePlayerData, 0, SpringLayout.EAST, gameFieldPanel);
 
 		setupPanel();
 		setupListeners();
 		setupLayout();
+		
+		
 	}
 
 	private void setupPanel()
 	{
-		this.setLayout(layout);
+		this.setLayout(overallLayout);
 		this.setBackground(Color.DARK_GRAY);
+		
+		
+		
+		gameFieldPanel.setLayout(fieldLayout);
 		// this.add(testTable);
 
-		layout.putConstraint(SpringLayout.WEST, testTable, 0, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, testTable, 0, SpringLayout.EAST, this);
+		overallLayout.putConstraint(SpringLayout.WEST, testTable, 0, SpringLayout.WEST, this);
+		overallLayout.putConstraint(SpringLayout.EAST, testTable, 0, SpringLayout.EAST, this);
 
 		setupInitialGameField();
 	}
@@ -105,11 +117,15 @@ public class GamePanel extends JPanel
 
 		gameColumnCellCount = (int) (screenWidth / 38) - 18;
 		gameRowCellCount = (int) (screenHeight / 30) - 10;
+		
+		this.setSize(new Dimension(screenWidth,  30 * gameRowCellCount));
+		System.out.println(this.getSize());
 	}
 
 	private void setupInitialGameField()
 	{
 		gameTable.setRowHeight(30);
+		// 1330, 840
 		gameTable.setPreferredSize(new Dimension(38 * gameColumnCellCount, 30 * gameRowCellCount));
 		gameTable.setCellSelectionEnabled(false);
 		gameTable.setGridColor(Color.BLACK);
@@ -135,12 +151,16 @@ public class GamePanel extends JPanel
 		gameData[midHeight][midWidth * 3] = bluePlayer;
 		gameTable.setValueAt(redPlayer.getImage(), midHeight, midWidth);
 		gameTable.setValueAt(bluePlayer.getImage(), midHeight, midWidth * 3);
+		System.out.println(gameRowCellCount + " " + gameColumnCellCount);
 
 		this.add(gameFieldPanel);
 
 		gameFieldPanel.setBackground(Color.LIGHT_GRAY);
+		
+				this.redPlayerData = new GameInfo(redPlayer);
+				fieldLayout.putConstraint(SpringLayout.WEST, redPlayerData, 0, SpringLayout.WEST, gameFieldPanel);
+				gameFieldPanel.add(redPlayerData);
 		gameFieldPanel.add(gameTable);
-		gameFieldPanel.add(redPlayerData);
 		gameFieldPanel.add(bluePlayerData);
 	}
 
@@ -230,9 +250,9 @@ public class GamePanel extends JPanel
 
 	private void setupLayout()
 	{
-		layout.putConstraint(SpringLayout.WEST, gameFieldPanel, 0, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, gameFieldPanel, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, gameFieldPanel, 0, SpringLayout.EAST, this);
+		overallLayout.putConstraint(SpringLayout.WEST, gameFieldPanel, 0, SpringLayout.WEST, this);
+		overallLayout.putConstraint(SpringLayout.SOUTH, gameFieldPanel, 0, SpringLayout.SOUTH, this);
+		overallLayout.putConstraint(SpringLayout.EAST, gameFieldPanel, 0, SpringLayout.EAST, this);
 	}
 
 	private void handleWKey()

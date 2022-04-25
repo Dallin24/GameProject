@@ -3,6 +3,7 @@ package game.view;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SpringLayout;
 
 import game.model.Cell;
 
@@ -13,7 +14,7 @@ public class GameInfo extends JPanel
 	private JTextArea playerName;
 	private JTextArea playerHealth;
 	
-
+	private SpringLayout layout;
 
 	public GameInfo(Cell player)
 	{
@@ -30,11 +31,15 @@ public class GameInfo extends JPanel
 
 	private void setupPanel()
 	{
+		this.setLayout(layout);
+		
 		playerName.setText(player.getPlayerName());
 		playerHealth.setText(player.getHealth() + "");
 		
 		this.add(playerName);
 		this.add(playerHealth);
+		
+		
 	}
 	
 	private void setupLayout()
