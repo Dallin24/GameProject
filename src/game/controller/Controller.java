@@ -23,8 +23,9 @@ public class Controller
 		{
 			lastShot = this.display.getPanelLastShot();
 			lastCycle = this.display.getPanelLastCycle();
-			this.display.fireBullets(lastShot, threshold);
 			this.display.checkCells(lastCycle, cycleThreshold);
+			this.display.fireBullets(lastShot, threshold);
+			
 		}
 	}
 }

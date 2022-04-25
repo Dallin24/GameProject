@@ -35,6 +35,7 @@ public class GamePanel extends JPanel
 
 	private JPanel gameFieldPanel;
 	private JTable gameTable;
+	private JTable testTable;
 
 	private Set<Integer> pressedKeysWASD;
 	private Set<Integer> pressedKeysArrows;
@@ -61,6 +62,7 @@ public class GamePanel extends JPanel
 				return ImageIcon.class;
 			}
 		};
+		this.testTable = new JTable(gameRowCellCount, gameColumnCellCount);
 
 		this.panelLastShot = System.currentTimeMillis();
 		this.panelLastCycle = System.currentTimeMillis();
@@ -79,6 +81,10 @@ public class GamePanel extends JPanel
 	{
 		this.setLayout(layout);
 		this.setBackground(Color.DARK_GRAY);
+		// this.add(testTable);
+
+		layout.putConstraint(SpringLayout.WEST, testTable, 0, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, testTable, 0, SpringLayout.EAST, this);
 
 		setupInitialGameField();
 	}
@@ -100,7 +106,7 @@ public class GamePanel extends JPanel
 		gameTable.setPreferredSize(new Dimension(38 * gameColumnCellCount, 30 * gameRowCellCount));
 		gameTable.setCellSelectionEnabled(false);
 		gameTable.setGridColor(Color.BLACK);
-		gameTable.setBackground(Color.GREEN);
+		gameTable.setBackground(Color.BLACK);
 		gameTable.setEnabled(false);
 
 		for (int row = 0; row < gameTable.getRowCount(); row++)
@@ -160,6 +166,7 @@ public class GamePanel extends JPanel
 
 				} else
 				{
+
 					switch (keyboard.getKeyChar())
 					{
 					case 'w':
@@ -177,7 +184,7 @@ public class GamePanel extends JPanel
 					}
 					pressedKeysWASD.add(keyboard.getKeyCode());
 				}
-				gameTable.updateUI();
+				// gameTable.updateUI();
 
 				if (pressedKeysArrows.contains(val))
 				{
@@ -471,7 +478,7 @@ public class GamePanel extends JPanel
 			int blueColumn = bluePlayer.getColumn();
 			int blueDirection = bluePlayer.getDirection();
 
-			Cell blueBullet = new Cell("BULLET", blueDirection);
+			Cell blueBullet = new Cell("BULLET", blueDirection, false);
 
 			// System.out.println(blueDirection);
 			switch (blueDirection)
@@ -522,7 +529,7 @@ public class GamePanel extends JPanel
 			int redColumn = redPlayer.getColumn();
 			int redDirection = redPlayer.getDirection();
 
-			Cell redBullet = new Cell("BULLET", redDirection);
+			Cell redBullet = new Cell("BULLET", redDirection, false);
 
 			// System.out.println(redDirection);
 			switch (redDirection)
@@ -569,6 +576,7 @@ public class GamePanel extends JPanel
 				break;
 			}
 
+			Cell currentCell;
 			panelLastShot = now;
 		}
 	}
@@ -585,30 +593,39 @@ public class GamePanel extends JPanel
 		if (now - lastCycle > cycleThreshold)
 		{
 			Cell currentCell;
-//			long lastCycleD = System.currentTimeMillis();
-//			final long cycleThresholdD = 1000; 
+
 			for (int row = 0; row < gameData.length; row++)
 			{
 				for (int column = 0; column < gameData[0].length; column++)
 				{
 					currentCell = gameData[row][column];
+					// testTable.setValueAt(currentCell.getCellType(), row, column);
+
+//					if (redPlayer.getRow() == row && redPlayer.getColumn() == column)
+//					{
+//						return;
+//					}
 					if (currentCell.getCellType().equals("BULLET"))
 					{
+						Cell newBlankCell = new Cell("BLANK");
 						switch (currentCell.getDirection())
 						{
 						case 0:
-							gameTable.setValueAt(currentCell.getImage(), row - 1, column);
-							gameTable.setValueAt(blank.getImage(), row, column);
-							gameData[row - 1][column] = currentCell;
-							break;
-						case 90:
-							break;
-						case 180:
-							break;
-						case 270:
+							try
+							{
+								gameData[row - 1][column] = currentCell;
+								gameTable.setValueAt(currentCell.getImage(), row - 1, column);
+								gameData[row][column] = newBlankCell;
+								gameTable.setValueAt(blank.getImage(), row, column);
+							} catch (ArrayIndexOutOfBoundsException error)
+							{
+								gameData[row][column] = newBlankCell;
+								gameTable.setValueAt(blank.getImage(), row, column);
+							}
 							break;
 						}
 					}
+					
 
 				}
 			}

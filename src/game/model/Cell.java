@@ -6,6 +6,8 @@ public class Cell
 {
 	private String cellName;
 	private String cellType;
+	
+	private boolean cellChecked;
 
 	private ImageIcon cellImage;
 
@@ -19,11 +21,12 @@ public class Cell
 		this.cellImage = setImageIcon(cellType);
 	}
 
-	public Cell(String cellType, int cellDirection)
+	public Cell(String cellType, int cellDirection, boolean cellChecked)
 	{
 		this.cellType = cellType;
 		this.cellDirection = cellDirection;
 		this.cellImage = setImageIcon(cellType);
+		this.cellChecked = cellChecked;
 	}
 
 	public Cell(String playerName, String cellType, int cellDirection, int row, int column)
@@ -106,6 +109,11 @@ public class Cell
 	{
 		this.cellType = cellType;
 	}
+	
+	public void setCellChecked(boolean newCheck)
+	{
+		this.cellChecked = newCheck;
+	}
 
 	public void setDirection(int newDirection)
 	{
@@ -130,6 +138,11 @@ public class Cell
 	public String getCellType()
 	{
 		return this.cellType;
+	}
+	
+	public boolean getCellChecked()
+	{
+		return this.cellChecked;
 	}
 
 	public int getDirection()
