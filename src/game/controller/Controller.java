@@ -14,17 +14,18 @@ public class Controller
 	public void start()
 	{
 		long lastShot = System.currentTimeMillis();
-		final long threshold = 1000; 
+		final long threshold = 600; 
 		
 		long lastCycle = System.currentTimeMillis();
-		final long cycleThreshold = 1000; 
+		final long cycleThreshold = 100; 
 		
 		while (true)
 		{
 			lastShot = this.display.getPanelLastShot();
 			lastCycle = this.display.getPanelLastCycle();
-			this.display.checkCells(lastCycle, cycleThreshold);
 			this.display.fireBullets(lastShot, threshold);
+			this.display.checkCells(lastCycle, cycleThreshold);
+
 			
 		}
 	}
