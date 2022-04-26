@@ -21,6 +21,12 @@ public class GamePanel extends JPanel
 {
 	private Controller app;
 
+	private int totalCellCountHorizontal;
+	private int totalCellCountVertical;
+
+	private int cellWidth;
+	private int cellHeight;
+	
 	private int gameRowCellCount;
 	private int gameColumnCellCount;
 
@@ -29,13 +35,12 @@ public class GamePanel extends JPanel
 	private Cell redPlayer;
 	private Cell bluePlayer;
 	private Cell blank;
-	
+
 	private GameInfo redPlayerData;
 	private GameInfo bluePlayerData;
 
 	private Long panelLastShot;
 	private Long panelLastCycle;
-
 
 	private JPanel gameFieldPanel;
 	private JTable gameTable;
@@ -58,8 +63,9 @@ public class GamePanel extends JPanel
 		this.redPlayer = new Cell("RED", "PLAYER", 90, 0, 0);
 		this.bluePlayer = new Cell("BLUE", "PLAYER", 270, 0, 0);
 		this.blank = new Cell("BLANK");
-		this.bluePlayerData = new GameInfo(bluePlayer);
-		
+		this.redPlayerData = new GameInfo(redPlayer, cellWidth, cellHeight, totalCellCountHorizontal, totalCellCountVertical);
+		this.bluePlayerData = new GameInfo(bluePlayer, cellWidth, cellHeight, totalCellCountHorizontal, totalCellCountVertical);
+
 		this.gameFieldPanel = new JPanel();
 		this.gameTable = new JTable(gameRowCellCount, gameColumnCellCount)
 		{
@@ -77,48 +83,42 @@ public class GamePanel extends JPanel
 		this.pressedKeysArrows = new TreeSet<Integer>();
 
 		this.overallLayout = new SpringLayout();
-		overallLayout.putConstraint(SpringLayout.NORTH, gameFieldPanel, 0, SpringLayout.NORTH, this);
 		this.fieldLayout = new SpringLayout();
-		fieldLayout.putConstraint(SpringLayout.NORTH, gameTable, 260, SpringLayout.NORTH, gameFieldPanel);
-		fieldLayout.putConstraint(SpringLayout.WEST, gameTable, 359, SpringLayout.WEST, gameFieldPanel);
-		fieldLayout.putConstraint(SpringLayout.SOUTH, gameTable, 0, SpringLayout.SOUTH, gameFieldPanel);
-		fieldLayout.putConstraint(SpringLayout.EAST, gameTable, -359, SpringLayout.EAST, gameFieldPanel);
-		fieldLayout.putConstraint(SpringLayout.EAST, bluePlayerData, 0, SpringLayout.EAST, gameFieldPanel);
 
 		setupPanel();
 		setupListeners();
 		setupLayout();
-		
-		
+
 	}
 
 	private void setupPanel()
 	{
 		this.setLayout(overallLayout);
 		this.setBackground(Color.DARK_GRAY);
-		
-		
-		
+
 		gameFieldPanel.setLayout(fieldLayout);
 		// this.add(testTable);
-
-		overallLayout.putConstraint(SpringLayout.WEST, testTable, 0, SpringLayout.WEST, this);
-		overallLayout.putConstraint(SpringLayout.EAST, testTable, 0, SpringLayout.EAST, this);
 
 		setupInitialGameField();
 	}
 
 	private void setScreenProportions()
 	{
+		this.cellWidth = 38;
+		this.cellHeight = 30;
+
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 
 		int screenHeight = (int) size.getHeight();
 		int screenWidth = (int) size.getWidth();
 
-		gameColumnCellCount = (int) (screenWidth / 38) - 18;
-		gameRowCellCount = (int) (screenHeight / 30) - 10;
-		
-		this.setSize(new Dimension(screenWidth,  30 * gameRowCellCount));
+		this.totalCellCountHorizontal = (int) (screenWidth / cellWidth);
+		this.totalCellCountVertical = (int) (screenHeight / cellHeight);
+
+		gameColumnCellCount = totalCellCountHorizontal - 18;
+		gameRowCellCount = totalCellCountVertical - 10;
+
+		this.setSize(new Dimension((gameColumnCellCount + 18) * cellWidth, (gameRowCellCount + 10) * cellHeight));
 		System.out.println(this.getSize());
 	}
 
@@ -126,7 +126,7 @@ public class GamePanel extends JPanel
 	{
 		gameTable.setRowHeight(30);
 		// 1330, 840
-		gameTable.setPreferredSize(new Dimension(38 * gameColumnCellCount, 30 * gameRowCellCount));
+		gameTable.setSize(new Dimension(38 * gameColumnCellCount, 30 * gameRowCellCount));
 		gameTable.setCellSelectionEnabled(false);
 		gameTable.setGridColor(Color.BLACK);
 		gameTable.setBackground(Color.BLACK);
@@ -151,15 +151,13 @@ public class GamePanel extends JPanel
 		gameData[midHeight][midWidth * 3] = bluePlayer;
 		gameTable.setValueAt(redPlayer.getImage(), midHeight, midWidth);
 		gameTable.setValueAt(bluePlayer.getImage(), midHeight, midWidth * 3);
-		System.out.println(gameRowCellCount + " " + gameColumnCellCount);
+		// System.out.println(gameRowCellCount + " " + gameColumnCellCount);
 
 		this.add(gameFieldPanel);
 
 		gameFieldPanel.setBackground(Color.LIGHT_GRAY);
-		
-				this.redPlayerData = new GameInfo(redPlayer);
-				fieldLayout.putConstraint(SpringLayout.WEST, redPlayerData, 0, SpringLayout.WEST, gameFieldPanel);
-				gameFieldPanel.add(redPlayerData);
+
+		gameFieldPanel.add(redPlayerData);
 		gameFieldPanel.add(gameTable);
 		gameFieldPanel.add(bluePlayerData);
 	}
@@ -240,7 +238,7 @@ public class GamePanel extends JPanel
 					}
 					pressedKeysArrows.add(keyboard.getKeyCode());
 				}
-				//gameTable.updateUI();
+				// gameTable.updateUI();
 			}
 		});
 
@@ -250,9 +248,26 @@ public class GamePanel extends JPanel
 
 	private void setupLayout()
 	{
+		// overallLayout.putConstraint(SpringLayout.WEST, testTable, 0,
+		// SpringLayout.WEST, this);
+		// overallLayout.putConstraint(SpringLayout.EAST, testTable, 0,
+		// SpringLayout.EAST, this);
+
+		fieldLayout.putConstraint(SpringLayout.NORTH, gameTable, (this.getHeight() - gameTable.getHeight() - cellHeight * 2), SpringLayout.NORTH, gameFieldPanel);
+		fieldLayout.putConstraint(SpringLayout.WEST, gameTable, ((this.getWidth() - gameTable.getWidth()) / 2), SpringLayout.WEST, gameFieldPanel);
+		fieldLayout.putConstraint(SpringLayout.EAST, gameTable, -((this.getWidth() - gameTable.getWidth()) / 2), SpringLayout.EAST, gameFieldPanel);
+		fieldLayout.putConstraint(SpringLayout.SOUTH, gameTable, 0, SpringLayout.SOUTH, gameFieldPanel);
+
+		overallLayout.putConstraint(SpringLayout.NORTH, gameFieldPanel, 0, SpringLayout.NORTH, this);
 		overallLayout.putConstraint(SpringLayout.WEST, gameFieldPanel, 0, SpringLayout.WEST, this);
 		overallLayout.putConstraint(SpringLayout.SOUTH, gameFieldPanel, 0, SpringLayout.SOUTH, this);
 		overallLayout.putConstraint(SpringLayout.EAST, gameFieldPanel, 0, SpringLayout.EAST, this);
+
+		fieldLayout.putConstraint(SpringLayout.NORTH, redPlayerData, (this.getHeight() - gameTable.getHeight()), SpringLayout.NORTH, gameFieldPanel);
+		fieldLayout.putConstraint(SpringLayout.WEST, redPlayerData, cellWidth, SpringLayout.WEST, gameFieldPanel);
+
+		fieldLayout.putConstraint(SpringLayout.NORTH, bluePlayerData, (this.getHeight() - gameTable.getHeight()), SpringLayout.NORTH, gameFieldPanel);
+		fieldLayout.putConstraint(SpringLayout.EAST, bluePlayerData, -cellWidth, SpringLayout.EAST, gameFieldPanel);
 	}
 
 	private void handleWKey()
@@ -647,22 +662,22 @@ public class GamePanel extends JPanel
 
 					if (currentCell.getCellType().equals("BULLET") && !currentCell.getCellChecked())
 					{
-						if(redPlayer.getRow() == row && redPlayer.getColumn() == column)
+						if (redPlayer.getRow() == row && redPlayer.getColumn() == column)
 						{
 							gameData[row][column] = redPlayer;
 							gameTable.setValueAt(redPlayer.getImage(), row, column);
 							redPlayerData.updatePlayerData("HEALTH", -10);
 							return;
 						}
-						
-						if(bluePlayer.getRow() == row && bluePlayer.getColumn() == column)
+
+						if (bluePlayer.getRow() == row && bluePlayer.getColumn() == column)
 						{
 							gameData[row][column] = bluePlayer;
 							gameTable.setValueAt(bluePlayer.getImage(), row, column);
 							bluePlayerData.updatePlayerData("HEALTH", -10);
 							return;
 						}
-						
+
 						Cell newBlankCell = new Cell("BLANK");
 						switch (currentCell.getDirection())
 						{
@@ -727,11 +742,8 @@ public class GamePanel extends JPanel
 							}
 							break;
 						}
-						
-						
+
 					}
-					
-					
 
 				}
 			}
