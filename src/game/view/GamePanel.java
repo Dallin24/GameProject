@@ -26,7 +26,7 @@ public class GamePanel extends JPanel
 
 	private int cellWidth;
 	private int cellHeight;
-	
+
 	private int gameRowCellCount;
 	private int gameColumnCellCount;
 
@@ -140,17 +140,16 @@ public class GamePanel extends JPanel
 			}
 		}
 
-		int midHeight = gameColumnCellCount / 2 - 2;
-		int midWidth = ((gameRowCellCount / 2) + 1) / 2;
+		int midHeight = gameData.length / 2;
+		int midWidth = (gameData[0].length / 2) / 2;
 
 		redPlayer.setLocation(midHeight, midWidth);
-		bluePlayer.setLocation(midHeight, midWidth * 3);
+		bluePlayer.setLocation(midHeight, midWidth * 3 + 1);
 
 		gameData[midHeight][midWidth] = redPlayer;
-		gameData[midHeight][midWidth * 3] = bluePlayer;
+		gameData[midHeight][midWidth * 3 + 1] = bluePlayer;
 		gameTable.setValueAt(redPlayer.getImage(), midHeight, midWidth);
-		gameTable.setValueAt(bluePlayer.getImage(), midHeight, midWidth * 3);
-		// System.out.println(gameRowCellCount + " " + gameColumnCellCount);
+		gameTable.setValueAt(bluePlayer.getImage(), midHeight, midWidth * 3 + 1);
 
 		this.add(gameFieldPanel);
 
@@ -159,10 +158,10 @@ public class GamePanel extends JPanel
 		gameFieldPanel.add(redPlayerData);
 		gameFieldPanel.add(gameTable);
 		gameFieldPanel.add(bluePlayerData);
-		
+
 		redPlayerData.setSize(new Dimension(cellWidth * (((totalCellCountHorizontal - gameRowCellCount) / 2) - 2), cellHeight * (gameColumnCellCount - 2)));
 		bluePlayerData.setSize(new Dimension(cellWidth * (((totalCellCountHorizontal - gameRowCellCount) / 2) - 2), cellHeight * (gameColumnCellCount - 2)));
-		
+
 	}
 
 	private void setupListeners()
@@ -241,6 +240,7 @@ public class GamePanel extends JPanel
 					}
 					pressedKeysArrows.add(keyboard.getKeyCode());
 				}
+
 				// gameTable.updateUI();
 			}
 		});
@@ -295,10 +295,15 @@ public class GamePanel extends JPanel
 		{
 			redPlayer.setLocation(currentRow - 1, currentColumn);
 
+			if (gameData[currentRow - 1][currentColumn].getCellType().equals("BULLET") && gameData[currentRow - 1][currentColumn].getOwner().equals("BLUE"))
+			{
+				redPlayerData.updatePlayerData("HEALTH", -10);
+			}
 			gameTable.setValueAt(redPlayer.getImage(), currentRow - 1, currentColumn);
 			gameData[currentRow - 1][currentColumn] = redPlayer;
 			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
 			gameData[currentRow][currentColumn] = blank;
+
 		}
 		catch (IndexOutOfBoundsException error)
 		{
@@ -325,6 +330,11 @@ public class GamePanel extends JPanel
 		try
 		{
 			redPlayer.setLocation(currentRow, currentColumn - 1);
+
+			if (gameData[currentRow][currentColumn - 1].getCellType().equals("BULLET") && gameData[currentRow][currentColumn - 1].getOwner().equals("BLUE"))
+			{
+				redPlayerData.updatePlayerData("HEALTH", -10);
+			}
 
 			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn - 1);
 			gameData[currentRow][currentColumn - 1] = redPlayer;
@@ -356,6 +366,11 @@ public class GamePanel extends JPanel
 		try
 		{
 			redPlayer.setLocation(currentRow + 1, currentColumn);
+
+			if (gameData[currentRow + 1][currentColumn].getCellType().equals("BULLET") && gameData[currentRow + 1][currentColumn].getOwner().equals("BLUE"))
+			{
+				redPlayerData.updatePlayerData("HEALTH", -10);
+			}
 
 			gameTable.setValueAt(redPlayer.getImage(), currentRow + 1, currentColumn);
 			gameData[currentRow + 1][currentColumn] = redPlayer;
@@ -389,6 +404,11 @@ public class GamePanel extends JPanel
 
 			redPlayer.setLocation(currentRow, currentColumn + 1);
 
+			if (gameData[currentRow][currentColumn + 1].getCellType().equals("BULLET") && gameData[currentRow][currentColumn + 1].getOwner().equals("BLUE"))
+			{
+				redPlayerData.updatePlayerData("HEALTH", -10);
+			}
+
 			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn + 1);
 			gameData[currentRow][currentColumn + 1] = redPlayer;
 			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
@@ -421,6 +441,11 @@ public class GamePanel extends JPanel
 		{
 			bluePlayer.setLocation(currentRow - 1, currentColumn);
 
+			if (gameData[currentRow - 1][currentColumn].getCellType().equals("BULLET") && gameData[currentRow - 1][currentColumn].getOwner().equals("RED"))
+			{
+				bluePlayerData.updatePlayerData("HEALTH", -10);
+			}
+
 			gameTable.setValueAt(bluePlayer.getImage(), currentRow - 1, currentColumn);
 			gameData[currentRow - 1][currentColumn] = bluePlayer;
 			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
@@ -451,6 +476,12 @@ public class GamePanel extends JPanel
 		try
 		{
 			bluePlayer.setLocation(currentRow, currentColumn - 1);
+
+			if (gameData[currentRow][currentColumn - 1].getCellType().equals("BULLET") && gameData[currentRow][currentColumn - 1].getOwner().equals("RED"))
+			{
+				bluePlayerData.updatePlayerData("HEALTH", -10);
+			}
+
 			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn - 1);
 			gameData[currentRow][currentColumn - 1] = bluePlayer;
 			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
@@ -481,6 +512,12 @@ public class GamePanel extends JPanel
 		try
 		{
 			bluePlayer.setLocation(currentRow + 1, currentColumn);
+
+			if (gameData[currentRow + 1][currentColumn].getCellType().equals("BULLET") && gameData[currentRow + 1][currentColumn].getOwner().equals("RED"))
+			{
+				bluePlayerData.updatePlayerData("HEALTH", -10);
+			}
+
 			gameTable.setValueAt(bluePlayer.getImage(), currentRow + 1, currentColumn);
 			gameData[currentRow + 1][currentColumn] = bluePlayer;
 			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
@@ -510,8 +547,13 @@ public class GamePanel extends JPanel
 
 		try
 		{
-
 			bluePlayer.setLocation(currentRow, currentColumn + 1);
+
+			if (gameData[currentRow][currentColumn + 1].getCellType().equals("BULLET") && gameData[currentRow][currentColumn + 1].getOwner().equals("RED"))
+			{
+				bluePlayerData.updatePlayerData("HEALTH", -10);
+			}
+
 			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn + 1);
 			gameData[currentRow][currentColumn + 1] = bluePlayer;
 			gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
@@ -537,7 +579,7 @@ public class GamePanel extends JPanel
 			int blueColumn = bluePlayer.getColumn();
 			int blueDirection = bluePlayer.getDirection();
 
-			Cell blueBullet = new Cell("BULLET", blueDirection, false);
+			Cell blueBullet = new Cell("BLUE", "BULLET", blueDirection, false);
 
 			switch (blueDirection)
 			{
@@ -591,7 +633,7 @@ public class GamePanel extends JPanel
 			int redColumn = redPlayer.getColumn();
 			int redDirection = redPlayer.getDirection();
 
-			Cell redBullet = new Cell("BULLET", redDirection, false);
+			Cell redBullet = new Cell("RED", "BULLET", redDirection, false);
 
 			// System.out.println(redDirection);
 			switch (redDirection)
@@ -669,7 +711,7 @@ public class GamePanel extends JPanel
 
 					if (currentCell.getCellType().equals("BULLET") && !currentCell.getCellChecked())
 					{
-						if (redPlayer.getRow() == row && redPlayer.getColumn() == column)
+						if (redPlayer.getRow() == row && redPlayer.getColumn() == column /* && currentCell.getOwner().equals("BLUE") */)
 						{
 							gameData[row][column] = redPlayer;
 							gameTable.setValueAt(redPlayer.getImage(), row, column);
@@ -677,7 +719,7 @@ public class GamePanel extends JPanel
 							return;
 						}
 
-						if (bluePlayer.getRow() == row && bluePlayer.getColumn() == column)
+						if (bluePlayer.getRow() == row && bluePlayer.getColumn() == column /* && currentCell.getOwner().equals("RED") */)
 						{
 							gameData[row][column] = bluePlayer;
 							gameTable.setValueAt(bluePlayer.getImage(), row, column);

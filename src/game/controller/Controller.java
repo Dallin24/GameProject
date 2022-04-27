@@ -14,10 +14,10 @@ public class Controller
 	public void start()
 	{
 		long lastShot = System.currentTimeMillis();
-		final long threshold = 500; 
+		final long threshold = 400; 
 		
 		long lastCycle = System.currentTimeMillis();
-		final long cycleThreshold = 100; 
+		final long cycleThreshold = 75; 
 		
 		while (true)
 		{

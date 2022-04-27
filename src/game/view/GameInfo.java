@@ -43,6 +43,8 @@ public class GameInfo extends JPanel
 		this.playerHealth = new JTextField();
 		
 		this.layout = new SpringLayout();
+		layout.putConstraint(SpringLayout.NORTH, playerHealth, 0, SpringLayout.SOUTH, playerName);
+		layout.putConstraint(SpringLayout.WEST, playerHealth, 0, SpringLayout.WEST, playerName);
 		
 
 		setupPanel();
@@ -85,9 +87,6 @@ public class GameInfo extends JPanel
 		layout.putConstraint(SpringLayout.NORTH, playerName, cellHeight, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, playerName, cellWidth, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.EAST, playerName, -cellWidth, SpringLayout.EAST, this);
-		
-		layout.putConstraint(SpringLayout.NORTH, playerHealth, 309, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, playerHealth, 152, SpringLayout.WEST, this);
 	}
 	
 	public void updatePlayerData(String type, int healthChange)

@@ -4,6 +4,7 @@ import javax.swing.ImageIcon;
 
 public class Cell
 {
+	private String cellOwner;
 	private String cellName;
 	private String cellType;
 	
@@ -22,8 +23,9 @@ public class Cell
 		this.cellImage = setImageIcon(cellType);
 	}
 
-	public Cell(String cellType, int cellDirection, boolean cellChecked)
+	public Cell(String cellOwner, String cellType, int cellDirection, boolean cellChecked)
 	{
+		this.cellOwner = cellOwner;
 		this.cellType = cellType;
 		this.cellDirection = cellDirection;
 		this.cellImage = setImageIcon(cellType);
@@ -175,5 +177,10 @@ public class Cell
 	public String getPlayerName()
 	{
 		return this.cellName;
+	}
+	
+	public String getOwner()
+	{
+		return cellOwner;
 	}
 }
