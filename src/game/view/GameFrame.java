@@ -50,4 +50,9 @@ public class GameFrame extends JFrame
 	{
 		return this.panel.getPanelLastCycle();
 	}
+	
+	public boolean arePlayersDead()
+	{
+		return this.panel.arePlayersDead();
+	}
 }

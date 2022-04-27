@@ -52,6 +52,8 @@ public class GamePanel extends JPanel
 	private SpringLayout overallLayout;
 	private SpringLayout fieldLayout;
 
+	private KeyListener keyboardListener;
+
 	public GamePanel(Controller app)
 	{
 		super();
@@ -166,7 +168,7 @@ public class GamePanel extends JPanel
 
 	private void setupListeners()
 	{
-		this.addKeyListener(new KeyListener()
+		this.keyboardListener = new KeyListener()
 		{
 			long LastShot = System.currentTimeMillis();
 			final long threshold = 100; // 500msec = half second
@@ -243,7 +245,9 @@ public class GamePanel extends JPanel
 
 				// gameTable.updateUI();
 			}
-		});
+		};
+
+		this.addKeyListener(keyboardListener);
 
 		this.setFocusable(true);
 		this.requestFocusInWindow();
@@ -813,5 +817,18 @@ public class GamePanel extends JPanel
 	public long getPanelLastCycle()
 	{
 		return panelLastCycle;
+	}
+
+	public boolean arePlayersDead()
+	{
+		if (redPlayer.getHealth() == 0 || bluePlayer.getHealth() == 0)
+		{
+			this.removeKeyListener(keyboardListener);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

@@ -5,10 +5,14 @@ import game.view.GameFrame;
 public class Controller
 {
 	private GameFrame display;
+	
+	private boolean isPlayerDead;
 
 	public Controller()
 	{
 		this.display = new GameFrame(this);
+		
+		this.isPlayerDead = false;
 	}
 
 	public void start()
@@ -19,14 +23,14 @@ public class Controller
 		long lastCycle = System.currentTimeMillis();
 		final long cycleThreshold = 75; 
 		
-		while (true)
+		while (!isPlayerDead)
 		{
 			lastShot = this.display.getPanelLastShot();
 			lastCycle = this.display.getPanelLastCycle();
 			this.display.fireBullets(lastShot, threshold);
 			this.display.checkCells(lastCycle, cycleThreshold);
 
-			
+			isPlayerDead = this.display.arePlayersDead();
 		}
 	}
 }
