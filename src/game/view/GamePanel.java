@@ -63,8 +63,8 @@ public class GamePanel extends JPanel
 		this.redPlayer = new Cell("RED", "PLAYER", 90, 0, 0);
 		this.bluePlayer = new Cell("BLUE", "PLAYER", 270, 0, 0);
 		this.blank = new Cell("BLANK");
-		this.redPlayerData = new GameInfo(redPlayer, cellWidth, cellHeight, totalCellCountHorizontal, totalCellCountVertical);
-		this.bluePlayerData = new GameInfo(bluePlayer, cellWidth, cellHeight, totalCellCountHorizontal, totalCellCountVertical);
+		this.redPlayerData = new GameInfo(redPlayer, cellWidth, cellHeight);
+		this.bluePlayerData = new GameInfo(bluePlayer, cellWidth, cellHeight);
 
 		this.gameFieldPanel = new JPanel();
 		this.gameTable = new JTable(gameRowCellCount, gameColumnCellCount)
@@ -119,7 +119,6 @@ public class GamePanel extends JPanel
 		gameRowCellCount = totalCellCountVertical - 10;
 
 		this.setSize(new Dimension((gameColumnCellCount + 18) * cellWidth, (gameRowCellCount + 10) * cellHeight));
-		System.out.println(this.getSize());
 	}
 
 	private void setupInitialGameField()
@@ -160,6 +159,10 @@ public class GamePanel extends JPanel
 		gameFieldPanel.add(redPlayerData);
 		gameFieldPanel.add(gameTable);
 		gameFieldPanel.add(bluePlayerData);
+		
+		redPlayerData.setSize(new Dimension(cellWidth * (((totalCellCountHorizontal - gameRowCellCount) / 2) - 2), cellHeight * (gameColumnCellCount - 2)));
+		bluePlayerData.setSize(new Dimension(cellWidth * (((totalCellCountHorizontal - gameRowCellCount) / 2) - 2), cellHeight * (gameColumnCellCount - 2)));
+		
 	}
 
 	private void setupListeners()
@@ -253,7 +256,7 @@ public class GamePanel extends JPanel
 		// overallLayout.putConstraint(SpringLayout.EAST, testTable, 0,
 		// SpringLayout.EAST, this);
 
-		fieldLayout.putConstraint(SpringLayout.NORTH, gameTable, (this.getHeight() - gameTable.getHeight() - cellHeight * 2), SpringLayout.NORTH, gameFieldPanel);
+		fieldLayout.putConstraint(SpringLayout.NORTH, gameTable, -(gameTable.getHeight()), SpringLayout.SOUTH, gameFieldPanel);
 		fieldLayout.putConstraint(SpringLayout.WEST, gameTable, ((this.getWidth() - gameTable.getWidth()) / 2), SpringLayout.WEST, gameFieldPanel);
 		fieldLayout.putConstraint(SpringLayout.EAST, gameTable, -((this.getWidth() - gameTable.getWidth()) / 2), SpringLayout.EAST, gameFieldPanel);
 		fieldLayout.putConstraint(SpringLayout.SOUTH, gameTable, 0, SpringLayout.SOUTH, gameFieldPanel);
@@ -263,11 +266,15 @@ public class GamePanel extends JPanel
 		overallLayout.putConstraint(SpringLayout.SOUTH, gameFieldPanel, 0, SpringLayout.SOUTH, this);
 		overallLayout.putConstraint(SpringLayout.EAST, gameFieldPanel, 0, SpringLayout.EAST, this);
 
-		fieldLayout.putConstraint(SpringLayout.NORTH, redPlayerData, (this.getHeight() - gameTable.getHeight()), SpringLayout.NORTH, gameFieldPanel);
+		fieldLayout.putConstraint(SpringLayout.NORTH, redPlayerData, -(gameTable.getHeight()) + cellHeight, SpringLayout.SOUTH, gameFieldPanel);
 		fieldLayout.putConstraint(SpringLayout.WEST, redPlayerData, cellWidth, SpringLayout.WEST, gameFieldPanel);
+		fieldLayout.putConstraint(SpringLayout.EAST, redPlayerData, -cellWidth, SpringLayout.WEST, gameTable);
+		fieldLayout.putConstraint(SpringLayout.SOUTH, redPlayerData, -cellHeight, SpringLayout.SOUTH, gameFieldPanel);
 
-		fieldLayout.putConstraint(SpringLayout.NORTH, bluePlayerData, (this.getHeight() - gameTable.getHeight()), SpringLayout.NORTH, gameFieldPanel);
+		fieldLayout.putConstraint(SpringLayout.NORTH, bluePlayerData, -(gameTable.getHeight()) + cellHeight, SpringLayout.SOUTH, gameFieldPanel);
 		fieldLayout.putConstraint(SpringLayout.EAST, bluePlayerData, -cellWidth, SpringLayout.EAST, gameFieldPanel);
+		fieldLayout.putConstraint(SpringLayout.WEST, bluePlayerData, cellWidth, SpringLayout.EAST, gameTable);
+		fieldLayout.putConstraint(SpringLayout.SOUTH, bluePlayerData, -cellHeight, SpringLayout.SOUTH, gameFieldPanel);
 	}
 
 	private void handleWKey()
