@@ -5,6 +5,7 @@ import java.awt.Dimension;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
@@ -17,6 +18,8 @@ public class GameInfo extends JPanel
 {
 	private int cellWidth;
 	private int cellHeight;
+	
+	private JTable healthBar;
 	
 	private Dimension normalDimension;
 	
@@ -36,15 +39,14 @@ public class GameInfo extends JPanel
 		
 		this.normalDimension = new Dimension(380, 990);
 		
-		this.player = player;
-
-		this.playerName = new JTextField();
+		this.healthBar = new JTable(10, 1);
 		
+		this.player = player;
+		this.playerName = new JTextField();
 		this.playerHealth = new JTextField();
 		
 		this.layout = new SpringLayout();
-		layout.putConstraint(SpringLayout.NORTH, playerHealth, 0, SpringLayout.SOUTH, playerName);
-		layout.putConstraint(SpringLayout.WEST, playerHealth, 0, SpringLayout.WEST, playerName);
+
 		
 
 		setupPanel();
@@ -79,6 +81,13 @@ public class GameInfo extends JPanel
 		this.add(playerName);
 		this.add(playerHealth);
 		
+		healthBar.setRowHeight(30);
+		healthBar.setSize(new Dimension(30 * 10, 38 * 1));
+		healthBar.setCellSelectionEnabled(false);
+		healthBar.setGridColor(Color.BLACK);
+		healthBar.setEnabled(false);
+		this.add(healthBar);
+		
 		
 	}
 	
@@ -87,6 +96,10 @@ public class GameInfo extends JPanel
 		layout.putConstraint(SpringLayout.NORTH, playerName, cellHeight, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, playerName, cellWidth, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.EAST, playerName, -cellWidth, SpringLayout.EAST, this);
+		
+		layout.putConstraint(SpringLayout.NORTH, playerHealth, 0, SpringLayout.SOUTH, playerName);
+		layout.putConstraint(SpringLayout.WEST, playerHealth, 0, SpringLayout.WEST, playerName);
+		
 	}
 	
 	public void updatePlayerData(String type, int healthChange)
