@@ -17,6 +17,11 @@ public class Cell
 	private int cellRow;
 	private int cellColumn;
 
+	public Cell()
+	{
+		
+	}
+	
 	public Cell(String cellType)
 	{
 		this.cellType = cellType;
@@ -41,7 +46,7 @@ public class Cell
 		this.cellHealth = 100;
 	}
 
-	private ImageIcon setImageIcon(String cellType)
+	protected ImageIcon setImageIcon(String cellType)
 	{
 		ImageIcon cellImage = new ImageIcon(getClass().getResource("/game/view/images/Background.png"));
 		switch (cellType)

@@ -13,6 +13,7 @@ import javax.swing.SpringLayout;
 import javax.swing.table.TableCellRenderer;
 
 import game.model.Cell;
+import game.model.HealthCell;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -27,13 +28,10 @@ public class GameInfo extends JPanel
 	private int cellHeight;
 
 	private JTable healthBar;
-	private ArrayList<Boolean> healthData;
+	private ArrayList<HealthCell> healthData;
 
 	private Dimension normalDimension;
-
-	private ImageIcon green;
-	private ImageIcon white;
-
+	
 	private Cell player;
 
 	private JTextField playerName;
@@ -57,10 +55,7 @@ public class GameInfo extends JPanel
 				return ImageIcon.class;
 			}
 		};
-		this.healthData = new ArrayList<Boolean>();
-
-		this.green = new ImageIcon(getClass().getResource("/game/view/images/Green.png"));
-		this.white = new ImageIcon(getClass().getResource("/game/view/images/White.png"));
+		this.healthData = new ArrayList<HealthCell>();
 
 		this.player = player;
 		this.playerName = new JTextField();
@@ -117,8 +112,8 @@ public class GameInfo extends JPanel
 
 		for (int index = 0; index < 10; index++)
 		{
-			healthData.add(true);
-			healthBar.setValueAt(green, index, 0);
+			healthData.add(new HealthCell());
+			healthBar.setValueAt(healthData.get(index).getColor(), index, 0);
 		}
 
 		this.add(healthBar);
