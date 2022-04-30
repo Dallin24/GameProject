@@ -31,6 +31,12 @@ public class GameFrame extends JFrame
 		this.setResizable(false);
 	}
 	
+	public void restart(Controller app)
+	{
+		this.panel.removeAll();
+		this.panel = new GamePanel(app);
+	}
+	
 	public void checkCells(long lastCycle, long cycleThreshold)
 	{
 		this.panel.checkCells(lastCycle, cycleThreshold);

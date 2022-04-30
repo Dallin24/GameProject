@@ -36,8 +36,8 @@ public class GamePanel extends JPanel
 	private Cell bluePlayer;
 	private Cell blank;
 
-	private GameInfo redPlayerData;
-	private GameInfo bluePlayerData;
+	private PlayerInfo redPlayerData;
+	private PlayerInfo bluePlayerData;
 
 	private Long panelLastShot;
 	private Long panelLastCycle;
@@ -65,8 +65,8 @@ public class GamePanel extends JPanel
 		this.redPlayer = new Cell("RED", "PLAYER", 90, 0, 0);
 		this.bluePlayer = new Cell("BLUE", "PLAYER", 270, 0, 0);
 		this.blank = new Cell("BLANK");
-		this.redPlayerData = new GameInfo(redPlayer, cellWidth, cellHeight);
-		this.bluePlayerData = new GameInfo(bluePlayer, cellWidth, cellHeight);
+		this.redPlayerData = new PlayerInfo(redPlayer, cellWidth, cellHeight);
+		this.bluePlayerData = new PlayerInfo(bluePlayer, cellWidth, cellHeight);
 
 		this.gameFieldPanel = new JPanel();
 		this.gameTable = new JTable(gameRowCellCount, gameColumnCellCount)

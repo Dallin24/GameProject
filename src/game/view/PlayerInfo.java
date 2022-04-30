@@ -1,28 +1,22 @@
 package game.view;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
-import javax.swing.table.TableCellRenderer;
 
 import game.model.Cell;
 import game.model.HealthCell;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 
 import java.awt.Font;
 import java.util.ArrayList;
 
-public class GameInfo extends JPanel
+public class PlayerInfo extends JPanel
 {
 	private int cellWidth;
 	private int cellHeight;
@@ -39,7 +33,7 @@ public class GameInfo extends JPanel
 
 	private SpringLayout layout;
 
-	public GameInfo(Cell player, int cellWidth, int cellHeight)
+	public PlayerInfo(Cell player, int cellWidth, int cellHeight)
 	{
 		super();
 
@@ -89,11 +83,9 @@ public class GameInfo extends JPanel
 		{
 			playerName.setForeground(Color.BLUE);
 		}
-
-		playerHealth.setText(player.getHealth() + "");
-
 		this.add(playerName);
 
+		playerHealth.setText(player.getHealth() + "");
 		playerHealth.setFont(new Font("Kohinoor Gujarati", Font.BOLD, 22));
 		playerHealth.setHorizontalAlignment(JTextField.CENTER);
 		playerHealth.setEditable(false);
@@ -123,7 +115,7 @@ public class GameInfo extends JPanel
 	private void setupLayout()
 	{
 		layout.putConstraint(SpringLayout.NORTH, playerName, cellHeight, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, playerName, cellWidth, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.WEST, playerName, cellWidth, SpringLayout.WEST, this);	
 		layout.putConstraint(SpringLayout.EAST, playerName, -cellWidth, SpringLayout.EAST, this);
 
 		layout.putConstraint(SpringLayout.NORTH, playerHealth, 0, SpringLayout.SOUTH, healthBar);

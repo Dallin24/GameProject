@@ -32,5 +32,9 @@ public class Controller
 
 			isPlayerDead = this.display.arePlayersDead();
 		}
+		
+		this.display.dispose();
+		this.display = new GameFrame(this);
+		this.isPlayerDead = false;
 	}
 }
