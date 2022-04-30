@@ -8,18 +8,27 @@ public class HealthCell extends Cell
 
 	private String color;
 
-	public HealthCell()
+	public HealthCell(String color)
 	{
 		super();
 
-		cellImage = new ImageIcon(getClass().getResource("/game/view/images/Green.png"));
-		color = "GREEN";
+		this.color = color;
+		
+		if (color.equals("GREEN"))
+		{
+			this.cellImage = new ImageIcon(getClass().getResource("/game/view/images/Green.png"));
+		}
+		else
+		{
+			this.cellImage = new ImageIcon(getClass().getResource("/game/view/images/White.png"));
+		}
+		
+		
 	}
 
 	@Override
 	protected ImageIcon setImageIcon(String color)
 	{
-
 		ImageIcon cellColor;
 		if (color.equals("GREEN"))
 		{
@@ -30,16 +39,13 @@ public class HealthCell extends Cell
 			cellColor = new ImageIcon(getClass().getResource("/game/view/images/White.png"));
 		}
 
+		this.color = color;
+		
 		return cellColor;
 	}
-
-	public void setColor(String color)
-	{
-		this.color = color;
-	}
 	
-	public String getColor()
+	public ImageIcon getColor()
 	{
-		return color;
+		return this.cellImage;
 	}
 }

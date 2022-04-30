@@ -112,7 +112,7 @@ public class GameInfo extends JPanel
 
 		for (int index = 0; index < 10; index++)
 		{
-			healthData.add(new HealthCell());
+			healthData.add(new HealthCell("GREEN"));
 			healthBar.setValueAt(healthData.get(index).getColor(), index, 0);
 		}
 
@@ -141,19 +141,15 @@ public class GameInfo extends JPanel
 		{
 			player.setHealth(player.getHealth() + healthChange);
 			playerHealth.setText(player.getHealth() + "");
-			healthData.remove(healthData.size() - 1);
+			healthData.remove(9);
+			healthData.add(0, new HealthCell("WHITE"));
 			
 			
 			for (int index = 0; index < 10; index++)
 			{
-				healthBar.setValueAt(green, index, 0);
+				healthBar.setValueAt(healthData.get(index).getColor(), index, 0);
 			}
 
-			
-			for (int index = 9 - healthData.size(); index >= 0; index--)
-			{
-				healthBar.setValueAt(white, index, 0);
-			}
 		}
 	}
 
