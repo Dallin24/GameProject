@@ -824,11 +824,35 @@ public class GamePanel extends JPanel
 		if (redPlayer.getHealth() == 0 || bluePlayer.getHealth() == 0)
 		{
 			this.removeKeyListener(keyboardListener);
+			
+			for (int row = 0; row < gameTable.getRowCount(); row++)
+			{
+				for (int column = 0; column < gameTable.getColumnCount(); column++)
+				{
+					gameData[row][column] = blank;
+					gameTable.setValueAt(blank.getImage(), row, column);
+				}
+			}
+			
 			return true;
 		}
 		else
 		{
 			return false;
+		}
+	}
+	
+	public String playerVictor()
+	{
+		if (redPlayer.getHealth() == 0)
+		{
+			gameFieldPanel.setBackground(Color.BLUE);
+			return "BLUE";
+		}
+		else
+		{
+			gameFieldPanel.setBackground(Color.RED);
+			return "RED";
 		}
 	}
 }

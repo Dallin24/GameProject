@@ -1,10 +1,13 @@
 package game.controller;
 
 import game.view.GameFrame;
+import game.view.Popup;
 
 public class Controller
 {
 	private GameFrame display;
+	
+	private Popup menu;
 	
 	private boolean isPlayerDead;
 
@@ -12,10 +15,12 @@ public class Controller
 	{
 		this.display = new GameFrame(this);
 		
+		this.menu = new Popup();
+		
 		this.isPlayerDead = false;
 	}
 
-	public void start()
+	public String start()
 	{
 		long lastShot = System.currentTimeMillis();
 		final long threshold = 400; 
@@ -25,16 +30,31 @@ public class Controller
 		
 		while (!isPlayerDead)
 		{
-			lastShot = this.display.getPanelLastShot();
-			lastCycle = this.display.getPanelLastCycle();
-			this.display.fireBullets(lastShot, threshold);
-			this.display.checkCells(lastCycle, cycleThreshold);
+			lastShot = display.getPanelLastShot();
+			lastCycle = display.getPanelLastCycle();
+			display.fireBullets(lastShot, threshold);
+			display.checkCells(lastCycle, cycleThreshold);
 
-			isPlayerDead = this.display.arePlayersDead();
+			isPlayerDead = display.arePlayersDead();
 		}
 		
-		this.display.dispose();
-		this.display = new GameFrame(this);
-		this.isPlayerDead = false;
+		menu.displayMessage(display, "GAME OVER\n" + display.playerVictor() + " has won!");
+		String result = menu.playAgain(display, "Play again?");
+		
+		if(result.equals("NO"))
+		{
+			return "NO";
+		}
+			
+		display.dispose();
+		display = new GameFrame(this);
+		isPlayerDead = false;
+		
+		return "YES";
+	}
+	
+	public void clearScreen()
+	{
+		display.dispose();
 	}
 }

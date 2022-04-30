@@ -61,4 +61,9 @@ public class GameFrame extends JFrame
 	{
 		return this.panel.arePlayersDead();
 	}
+	
+	public String playerVictor()
+	{
+		return this.panel.playerVictor();
+	}
 }
