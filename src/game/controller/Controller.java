@@ -1,5 +1,7 @@
 package game.controller;
 
+import java.awt.Color;
+
 import game.view.GameFrame;
 import game.view.Popup;
 
@@ -38,7 +40,17 @@ public class Controller
 			isPlayerDead = display.arePlayersDead();
 		}
 		
-		menu.displayMessage(display, "GAME OVER\n" + display.playerVictor() + " has won!");
+		Color color;
+		if(display.playerVictor().equals("RED"))
+		{
+			 color = Color.RED;
+		}
+		else
+		{
+			 color = Color.BLUE;
+		}
+		menu.displayMessage(display, display.playerVictor() + " has won!", color);
+		
 		String result = menu.playAgain(display, "Play again?");
 		
 		if(result.equals("NO"))
