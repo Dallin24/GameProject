@@ -31,7 +31,7 @@ public class Controller
 		final long cycleThreshold = 75; 
 		
 		long lastShrink = System.currentTimeMillis();
-		final long shrinkThreshold = 4000; 
+		final long shrinkThreshold = 1000; 
 		
 		while (!isPlayerDead)
 		{
@@ -46,7 +46,11 @@ public class Controller
 		}
 		
 		Color color;
-		if(display.playerVictor().equals("RED"))
+		if(display.playerVictor().equals("TIE"))
+		{
+			color = Color.BLACK;
+		}
+		else if(display.playerVictor().equals("RED"))
 		{
 			 color = Color.RED;
 		}
@@ -54,7 +58,15 @@ public class Controller
 		{
 			 color = Color.BLUE;
 		}
-		menu.displayMessage(display, display.playerVictor() + " has won!", color);
+		
+		if(display.playerVictor().equals("TIE"))
+		{
+			menu.displayMessage(display, "It's a TIE!", color);
+		}
+		else
+		{
+			menu.displayMessage(display, display.playerVictor() + " has won!", color);
+		}
 		
 		String result = menu.playAgain(display, "Play again?");
 		

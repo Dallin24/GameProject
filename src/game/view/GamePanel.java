@@ -32,12 +32,15 @@ public class GamePanel extends JPanel
 
 	private int currentBorderRowIndex;
 	private int currentBorderColumnIndex;
+	
+	private boolean isGameWallFull;
 
 	private Cell[][] gameData;
 
 	private Cell redPlayer;
 	private Cell bluePlayer;
 	private Cell blank;
+	private Cell border;
 
 	private PlayerInfo redPlayerData;
 	private PlayerInfo bluePlayerData;
@@ -69,6 +72,8 @@ public class GamePanel extends JPanel
 		this.redPlayer = new Cell("RED", "PLAYER", 90, 0, 0);
 		this.bluePlayer = new Cell("BLUE", "PLAYER", 270, 0, 0);
 		this.blank = new Cell("BLANK");
+		this.border = new Cell("BORDER");
+		
 		this.redPlayerData = new PlayerInfo(redPlayer, cellWidth, cellHeight);
 		this.bluePlayerData = new PlayerInfo(bluePlayer, cellWidth, cellHeight);
 
@@ -116,6 +121,7 @@ public class GamePanel extends JPanel
 
 		this.currentBorderRowIndex = 0;
 		this.currentBorderColumnIndex = 0;
+		this.isGameWallFull = false;
 
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -804,7 +810,6 @@ public class GamePanel extends JPanel
 
 		if (now - lastShrink > shrinkThreshold)
 		{
-			Cell border = new Cell("BORDER");
 			for (int row = 0; row <= this.currentBorderRowIndex; row++)
 			{
 				for (int column = 0; column < gameData[0].length; column++)
@@ -837,8 +842,14 @@ public class GamePanel extends JPanel
 					gameTable.setValueAt(border.getImage(), row, column);
 				}
 			}
-		
 			
+			int midHeight = gameData.length / 2;
+			int midWidth = (gameData[0].length / 2);
+			
+			if(gameData[midHeight][midWidth].getCellType().equals("BORDER"))
+			{
+				isGameWallFull = true;
+			}
 			currentBorderColumnIndex++;
 			currentBorderRowIndex++;
 			panelLastShrink = now;
@@ -873,6 +884,20 @@ public class GamePanel extends JPanel
 
 			return true;
 		}
+		else if(isGameWallFull)
+		{
+			this.removeKeyListener(keyboardListener);
+
+			for (int row = 0; row < gameTable.getRowCount(); row++)
+			{
+				for (int column = 0; column < gameTable.getColumnCount(); column++)
+				{
+					gameData[row][column] = border;
+					gameTable.setValueAt(border.getImage(), row, column);
+				}
+			}
+			return true;
+		}
 		else
 		{
 			return false;
@@ -881,7 +906,11 @@ public class GamePanel extends JPanel
 
 	public String playerVictor()
 	{
-		if (redPlayer.getHealth() == 0)
+		if(isGameWallFull)
+		{
+			return "TIE";
+		}
+		else if (redPlayer.getHealth() == 0)
 		{
 			gameFieldPanel.setBackground(Color.BLUE);
 			return "BLUE";
