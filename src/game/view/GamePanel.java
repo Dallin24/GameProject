@@ -944,6 +944,15 @@ public class GamePanel extends JPanel
 			{
 				for (int column = 0; column < gameData[0].length; column++)
 				{
+					if(gameData[row][column].getCellType().equals("PLAYER"))
+					{
+						Cell movingPlayer = gameData[row][column];
+						gameData[row + 1][column] = movingPlayer;
+						movingPlayer.setLocation(row + 1, column);
+						gameTable.setValueAt(movingPlayer.getImage(), row + 1, column);
+						
+					}
+					
 					gameData[row][column] = border;
 					gameTable.setValueAt(border.getImage(), row, column);
 				}
@@ -953,6 +962,15 @@ public class GamePanel extends JPanel
 			{
 				for (int column = 0; column < gameData[0].length; column++)
 				{
+					if(gameData[row][column].getCellType().equals("PLAYER"))
+					{
+						Cell movingPlayer = gameData[row][column];
+						gameData[row - 1][column] = movingPlayer;
+						movingPlayer.setLocation(row - 1, column);
+						gameTable.setValueAt(movingPlayer.getImage(), row - 1, column);
+						
+					}
+					
 					gameData[row][column] = border;
 					gameTable.setValueAt(border.getImage(), row, column);
 				}
@@ -962,12 +980,30 @@ public class GamePanel extends JPanel
 			{
 				for (int column = 0; column <= this.currentBorderColumnIndex; column++)
 				{
+					if(gameData[row][column].getCellType().equals("PLAYER"))
+					{
+						Cell movingPlayer = gameData[row][column];
+						gameData[row][column + 1] = movingPlayer;
+						movingPlayer.setLocation(row, column + 1);
+						gameTable.setValueAt(movingPlayer.getImage(), row, column + 1);
+						
+					}
+					
 					gameData[row][column] = border;
 					gameTable.setValueAt(border.getImage(), row, column);
 				}
 
 				for (int column = gameData[0].length - 1; column > gameData[0].length - this.currentBorderColumnIndex - 2; column--)
 				{
+					if(gameData[row][column].getCellType().equals("PLAYER"))
+					{
+						Cell movingPlayer = gameData[row][column];
+						gameData[row][column - 1] = movingPlayer;
+						movingPlayer.setLocation(row, column - 1);
+						gameTable.setValueAt(movingPlayer.getImage(), row, column - 1);
+						
+					}
+					
 					gameData[row][column] = border;
 					gameTable.setValueAt(border.getImage(), row, column);
 				}
