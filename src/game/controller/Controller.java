@@ -25,17 +25,22 @@ public class Controller
 	public String start()
 	{
 		long lastShot = System.currentTimeMillis();
-		final long threshold = 400; 
+		final long shotThreshold = 400; 
 		
 		long lastCycle = System.currentTimeMillis();
 		final long cycleThreshold = 75; 
+		
+		long lastShrink = System.currentTimeMillis();
+		final long shrinkThreshold = 15000; 
 		
 		while (!isPlayerDead)
 		{
 			lastShot = display.getPanelLastShot();
 			lastCycle = display.getPanelLastCycle();
-			display.fireBullets(lastShot, threshold);
+			lastShrink = display.getPanelLastShrink();
+			display.fireBullets(lastShot, shotThreshold);
 			display.checkCells(lastCycle, cycleThreshold);
+			display.shrinkScreen(lastShrink, shrinkThreshold);
 
 			isPlayerDead = display.arePlayersDead();
 		}

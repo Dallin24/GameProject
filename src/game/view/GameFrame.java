@@ -42,9 +42,14 @@ public class GameFrame extends JFrame
 		this.panel.checkCells(lastCycle, cycleThreshold);
 	}
 	
-	public void fireBullets(long lastMove, long threshold)
+	public void fireBullets(long lastShot, long shotThreshold)
 	{
-		this.panel.fireBullets(lastMove, threshold);
+		this.panel.fireBullets(lastShot, shotThreshold);
+	}
+	
+	public void shrinkScreen(long lastShrink, long shrinkThreshold)
+	{
+		this.panel.shrinkScreen(lastShrink, shrinkThreshold);
 	}
 	
 	public long getPanelLastShot()
@@ -55,6 +60,11 @@ public class GameFrame extends JFrame
 	public long getPanelLastCycle()
 	{
 		return this.panel.getPanelLastCycle();
+	}
+	
+	public long getPanelLastShrink()
+	{
+		return this.panel.getPanelLastShrink();
 	}
 	
 	public boolean arePlayersDead()

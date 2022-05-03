@@ -41,6 +41,7 @@ public class GamePanel extends JPanel
 
 	private Long panelLastShot;
 	private Long panelLastCycle;
+	private Long panelLastShrink;
 
 	private JPanel gameFieldPanel;
 	private JTable gameTable;
@@ -80,6 +81,7 @@ public class GamePanel extends JPanel
 
 		this.panelLastShot = System.currentTimeMillis();
 		this.panelLastCycle = System.currentTimeMillis();
+		this.panelLastShrink = System.currentTimeMillis();
 
 		this.pressedKeysWASD = new TreeSet<Integer>();
 		this.pressedKeysArrows = new TreeSet<Integer>();
@@ -788,6 +790,16 @@ public class GamePanel extends JPanel
 			}
 		}
 
+	}
+	
+	public void shrinkScreen(long lastShrink, long shrinkThreshold)
+	{
+		
+	}
+	
+	public long getPanelLastShrink()
+	{
+		return panelLastShrink;
 	}
 
 	public long getPanelLastCycle()
