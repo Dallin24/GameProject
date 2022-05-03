@@ -66,6 +66,9 @@ public class Cell
 		case "BULLET":
 			cellImage = new ImageIcon(getClass().getResource("/game/view/images/BulletNormal.png"));
 			break;
+		case "BORDER":
+			cellImage = new ImageIcon(getClass().getResource("/game/view/images/OrangeBorder.png"));
+			break;
 		}
 
 		return cellImage;

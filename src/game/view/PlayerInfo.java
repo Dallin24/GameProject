@@ -119,10 +119,10 @@ public class PlayerInfo extends JPanel
 		layout.putConstraint(SpringLayout.EAST, playerName, -cellWidth, SpringLayout.EAST, this);
 
 		layout.putConstraint(SpringLayout.NORTH, playerHealth, 0, SpringLayout.SOUTH, healthBar);
-		layout.putConstraint(SpringLayout.WEST, playerHealth, cellWidth * 3, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.WEST, playerHealth, cellWidth * 3 + 10, SpringLayout.WEST, this);
 		
-		layout.putConstraint(SpringLayout.WEST, healthBar, cellWidth * 3, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, healthBar, -cellWidth * 3, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.WEST, healthBar, cellWidth * 3 + 10, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, healthBar, -cellWidth * 3 - 10, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, healthBar, cellHeight * 4, SpringLayout.NORTH, this);
 
 	}

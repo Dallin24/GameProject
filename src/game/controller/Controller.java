@@ -31,7 +31,7 @@ public class Controller
 		final long cycleThreshold = 75; 
 		
 		long lastShrink = System.currentTimeMillis();
-		final long shrinkThreshold = 15000; 
+		final long shrinkThreshold = 4000; 
 		
 		while (!isPlayerDead)
 		{
