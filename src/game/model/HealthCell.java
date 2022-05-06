@@ -6,13 +6,9 @@ public class HealthCell extends Cell
 {
 	private ImageIcon cellImage;
 
-	private String color;
-
 	public HealthCell(String color)
 	{
-		super();
-
-		this.color = color;
+		super(color);
 		
 		if (color.equals("GREEN"))
 		{
@@ -38,8 +34,6 @@ public class HealthCell extends Cell
 		{
 			cellColor = new ImageIcon(getClass().getResource("/game/view/images/White.png"));
 		}
-
-		this.color = color;
 		
 		return cellColor;
 	}

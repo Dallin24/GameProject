@@ -16,11 +16,6 @@ public class Cell
 	private int cellDirection;
 	private int cellRow;
 	private int cellColumn;
-
-	public Cell()
-	{
-		
-	}
 	
 	public Cell(String cellType)
 	{
