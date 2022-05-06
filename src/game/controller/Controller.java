@@ -26,8 +26,8 @@ public class Controller
 		this.isPlayerDead = false;
 		
 		this.winRecords = new int[3];
-		this.dataFile = "save.pokemon";
-		this.winRecords = IOController.loadData(dataFile, display);
+		this.dataFile = "save.wins";
+		//this.winRecords = IOController.loadData(dataFile, display);
 	}
 
 	public String start()
@@ -56,16 +56,21 @@ public class Controller
 		Color color;
 		if(display.playerVictor().equals("TIE"))
 		{
+			this.winRecords[2] += 1; 
 			color = Color.BLACK;
 		}
 		else if(display.playerVictor().equals("RED"))
 		{
+			this.winRecords[0] += 1;
 			 color = Color.RED;
 		}
 		else
 		{
+			this.winRecords[1] += 1;
 			 color = Color.BLUE;
 		}
+		
+		IOController.saveData(dataFile, winRecords, display);
 		
 		if(display.playerVictor().equals("TIE"))
 		{
