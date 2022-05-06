@@ -12,6 +12,10 @@ public class Controller
 	private Popup menu;
 	
 	private boolean isPlayerDead;
+	
+	private int[] winRecords;
+	
+	private String dataFile;
 
 	public Controller()
 	{
@@ -20,6 +24,10 @@ public class Controller
 		this.menu = new Popup();
 		
 		this.isPlayerDead = false;
+		
+		this.winRecords = new int[3];
+		this.dataFile = "save.pokemon";
+		this.winRecords = IOController.loadData(dataFile, display);
 	}
 
 	public String start()
