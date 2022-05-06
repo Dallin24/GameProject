@@ -27,11 +27,12 @@ public class Controller
 		
 		this.winRecords = new int[3];
 		this.dataFile = "save.wins";
-		this.winRecords = IOController.loadData(dataFile, display);
 	}
 
 	public String start()
 	{
+		this.winRecords = IOController.loadData(dataFile, display);
+		System.out.println("RED:" + winRecords[0] + " BLUE:" + winRecords[1] + " TIE:" + winRecords[2]);
 		long lastShot = System.currentTimeMillis();
 		final long shotThreshold = 400; 
 		
