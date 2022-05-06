@@ -48,6 +48,8 @@ public class GamePanel extends JPanel
 	private Long panelLastShot;
 	private Long panelLastCycle;
 	private Long panelLastShrink;
+	
+	private double scaleShrinkThreshold;
 
 	private JPanel gameFieldPanel;
 	private JTable gameTable;
@@ -90,6 +92,7 @@ public class GamePanel extends JPanel
 		this.panelLastShot = System.currentTimeMillis();
 		this.panelLastCycle = System.currentTimeMillis();
 		this.panelLastShrink = System.currentTimeMillis();
+		this.scaleShrinkThreshold = 1;
 
 		this.pressedKeysWASD = new TreeSet<Integer>();
 		this.pressedKeysArrows = new TreeSet<Integer>();
@@ -897,49 +900,9 @@ public class GamePanel extends JPanel
 	{
 		long now = System.currentTimeMillis();
 
-//		for (int row = 0; row <= this.currentBorderRowIndex; row++)
-//		{
-//			for (int column = 0; column < gameData[0].length; column++)
-//			{
-//				gameData[row][column] = border;
-//				gameTable.setValueAt(border.getImage(), row, column);
-//			}
-//		}
-//		
-//		for (int row = gameData.length - 1; row >= gameData.length - this.currentBorderRowIndex - 1; row--)
-//		{
-//			for (int column = 0; column < gameData[0].length; column++)
-//			{
-//				gameData[row][column] = border;
-//				gameTable.setValueAt(border.getImage(), row, column);
-//			}
-//		}
-//		
-//		for (int row = 0; row < gameData.length; row++)
-//		{
-//			for (int column = 0; column <= this.currentBorderColumnIndex; column++)
-//			{
-//				gameData[row][column] = border;
-//				gameTable.setValueAt(border.getImage(), row, column);
-//			}
-//			
-//			for (int column = gameData[0].length - 1; column > gameData[0].length - this.currentBorderColumnIndex - 2; column--)
-//			{
-//				gameData[row][column] = border;
-//				gameTable.setValueAt(border.getImage(), row, column);
-//			}
-//		}
-//		
-//		int midHeight = gameData.length / 2;
-//		int midWidth = (gameData[0].length / 2);
-//		
-//		if(gameData[midHeight][midWidth].getCellType().equals("BORDER"))
-//		{
-//			isGameWallFull = true;
-//		}
-//		
-		if (now - lastShrink > shrinkThreshold)
+		if (now - lastShrink > shrinkThreshold * scaleShrinkThreshold)
 		{
+			scaleShrinkThreshold *= 0.9;
 			for (int row = 0; row <= this.currentBorderRowIndex; row++)
 			{
 				for (int column = 0; column < gameData[0].length; column++)
@@ -1104,4 +1067,16 @@ public class GamePanel extends JPanel
 			return "RED";
 		}
 	}
+	
+//	private void changeShrinkThreshold()
+//	{
+//		long now = System.currentTimeMillis();
+//
+//		if (now - panelLastShrinkThresholdChange > 10000)
+//		{
+//			scaleShrinkThreshold *= 0.2;
+//			
+//			panelLastShrinkThresholdChange= now;
+//		}
+//	}
 }
