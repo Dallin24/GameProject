@@ -27,7 +27,7 @@ public class Controller
 		
 		this.winRecords = new int[3];
 		this.dataFile = "save.wins";
-		//this.winRecords = IOController.loadData(dataFile, display);
+		this.winRecords = IOController.loadData(dataFile, display);
 	}
 
 	public String start()
