@@ -753,12 +753,17 @@ public class GamePanel extends JPanel
 
 		if (now - lastShot > threshold)
 		{
+			
+			
 			int blueRow = bluePlayer.getRow();
 			int blueColumn = bluePlayer.getColumn();
 			int blueDirection = bluePlayer.getDirection();
 
 			Cell blueBullet = new Cell("BLUE", "BULLET", blueDirection, false);
 
+			bluePlayer.setDirection(blueDirection, true);
+			gameTable.setValueAt(bluePlayer.getImage(), blueRow, blueColumn);
+			
 			switch (blueDirection)
 			{
 			case (0):
@@ -827,6 +832,11 @@ public class GamePanel extends JPanel
 			int redColumn = redPlayer.getColumn();
 			int redDirection = redPlayer.getDirection();
 
+			
+			redPlayer.setDirection(redDirection, true);
+			gameTable.setValueAt(redPlayer.getImage(), redRow, redColumn);
+			
+			
 			Cell redBullet = new Cell("RED", "BULLET", redDirection, false);
 
 			// System.out.println(redDirection);
@@ -911,6 +921,14 @@ public class GamePanel extends JPanel
 		if (now - lastCycle > cycleThreshold)
 		{
 			Cell currentCell;
+			
+			bluePlayer.setDirection(bluePlayer.getDirection());
+			gameTable.setValueAt(bluePlayer.getImage(), bluePlayer.getRow(), bluePlayer.getColumn());
+			//gameData[bluePlayer.getRow()][bluePlayer.getColumn()] = bluePlayer;
+			
+			redPlayer.setDirection(redPlayer.getDirection());
+			gameTable.setValueAt(redPlayer.getImage(), redPlayer.getRow(), redPlayer.getColumn());
+			//gameData[redPlayer.getRow()][redPlayer.getColumn()] = redPlayer;
 
 			for (int row = 0; row < gameData.length; row++)
 			{

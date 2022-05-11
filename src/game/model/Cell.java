@@ -111,6 +111,49 @@ public class Cell
 		
 		this.cellImage = playerImage;
 	}
+	
+	private void setImageIcon(String cellName, String cellType, int direction, boolean isFire)
+	{
+		ImageIcon playerImage = new ImageIcon();
+
+		if (cellName.equals("RED"))
+		{
+			switch (direction)
+			{
+			case 0:
+				playerImage = new ImageIcon(getClass().getResource("/game/view/images/RedUpFire.png"));
+				break;
+			case 90:
+				playerImage = new ImageIcon(getClass().getResource("/game/view/images/RedRightFire.png"));
+				break;
+			case 180:
+				playerImage = new ImageIcon(getClass().getResource("/game/view/images/RedDownFire.png"));
+				break;
+			case 270:
+				playerImage = new ImageIcon(getClass().getResource("/game/view/images/RedLeftFire.png"));
+				break;
+			}
+		} else
+		{
+			switch (direction)
+			{
+			case 0:
+				playerImage = new ImageIcon(getClass().getResource("/game/view/images/BlueUpFire.png"));
+				break;
+			case 90:
+				playerImage = new ImageIcon(getClass().getResource("/game/view/images/BlueRightFire.png"));
+				break;
+			case 180:
+				playerImage = new ImageIcon(getClass().getResource("/game/view/images/BlueDownFire.png"));
+				break;
+			case 270:
+				playerImage = new ImageIcon(getClass().getResource("/game/view/images/BlueLeftFire.png"));
+				break;
+			}
+		}
+		
+		this.cellImage = playerImage;
+	}
 
 	public void setCellType(String cellType)
 	{
@@ -128,6 +171,15 @@ public class Cell
 		if (this.cellType.equals("PLAYER"))
 		{
 			setImageIcon(this.cellName, this.cellType, newDirection);
+		}
+	}
+	
+	public void setDirection(int direction, boolean isFire)
+	{
+		this.cellDirection = direction;
+		if (this.cellType.equals("PLAYER"))
+		{
+			setImageIcon(this.cellName, this.cellType, direction, isFire);
 		}
 	}
 
