@@ -33,7 +33,7 @@ public class Controller
 	{
 		this.winRecords = IOController.loadData(dataFile, display);
 		
-		menu.displayMessage(display, "The current records are:" + "\nRed Wins: " + winRecords[0] + "\nBlue Wins: " + winRecords[1] + "\nTies: " + winRecords[2] +  "\n\nPress OK to start the game");
+		menu.displayMessage(null, "The current records are:" + "\nRed Wins: " + winRecords[0] + "\nBlue Wins: " + winRecords[1] + "\nTies: " + winRecords[2] +  "\n\nPress OK to start the game");
 		
 		long lastShot = System.currentTimeMillis();
 		final long shotThreshold = 400; 
@@ -101,5 +101,17 @@ public class Controller
 	public void clearScreen()
 	{
 		display.dispose();
+	}
+	
+	@Override
+	public String toString()
+	{
+		String text = "";
+		
+		this.winRecords = IOController.loadData(dataFile, display);
+		
+		text += "The current records are: " + "Red Wins: " + winRecords[0] + " Blue Wins: " + winRecords[1] + " Ties: " + winRecords[2];
+		
+		return text;
 	}
 }

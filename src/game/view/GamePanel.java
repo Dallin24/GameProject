@@ -21,22 +21,60 @@ public class GamePanel extends JPanel
 {
 	private Controller app;
 
+	/**
+	 * Holds the total number of cells that fit horizontally in the screen
+	 */
 	private int totalCellCountHorizontal;
+	
+	/**
+	 * Holds the total number of cells that fit vertically in the screen
+	 */
 	private int totalCellCountVertical;
+	
 
+	/**
+	 * Holds the pixel width of a cell
+	 */
 	private int cellWidth;
+	
+	/**
+	 * Holds the pixel height of a cell
+	 */
 	private int cellHeight;
 
+	/**
+	 * Holds the number of cells that fit horizontally on the game field
+	 */
 	private int gameRowCellCount;
+	
+	/**
+	 * Holds the number of cells that fit vertically on the game field
+	 */
 	private int gameColumnCellCount;
 
+	/**
+	 * Holds the current index number of how much border fills the screen horizontally
+	 */
 	private int currentBorderRowIndex;
+	
+	/**
+	 * 	Holds the current index number of how much border fills the screen vertically
+	 */
 	private int currentBorderColumnIndex;
 
+	/**
+	 * 
+	 */
 	private boolean isGameWallFull;
 
+	/**
+	 * 
+	 */
 	private Cell[][] gameData;
 
+	/**
+	 * 
+	 */
 	private Cell redPlayer;
 	private Cell bluePlayer;
 	private Cell blank;
@@ -63,6 +101,9 @@ public class GamePanel extends JPanel
 
 	private KeyListener keyboardListener;
 
+	/**
+	 * @param app
+	 */
 	public GamePanel(Controller app)
 	{
 		super();
@@ -759,11 +800,6 @@ public class GamePanel extends JPanel
 		}
 	}
 
-	public long getPanelLastShot()
-	{
-		return panelLastShot;
-	}
-
 	public void checkCells(long lastCycle, long cycleThreshold)
 	{
 		long now = System.currentTimeMillis();
@@ -986,16 +1022,6 @@ public class GamePanel extends JPanel
 
 	}
 
-	public long getPanelLastShrink()
-	{
-		return panelLastShrink;
-	}
-
-	public long getPanelLastCycle()
-	{
-		return panelLastCycle;
-	}
-
 	public boolean arePlayersDead()
 	{
 		if (redPlayer.getHealth() == 0 || bluePlayer.getHealth() == 0)
@@ -1068,15 +1094,19 @@ public class GamePanel extends JPanel
 		}
 	}
 	
-//	private void changeShrinkThreshold()
-//	{
-//		long now = System.currentTimeMillis();
-//
-//		if (now - panelLastShrinkThresholdChange > 10000)
-//		{
-//			scaleShrinkThreshold *= 0.2;
-//			
-//			panelLastShrinkThresholdChange= now;
-//		}
-//	}
+	public long getPanelLastShot()
+	{
+		return panelLastShot;
+	}
+	
+	public long getPanelLastShrink()
+	{
+		return panelLastShrink;
+	}
+
+	public long getPanelLastCycle()
+	{
+		return panelLastCycle;
+	}
+	
 }
