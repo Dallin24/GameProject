@@ -17,6 +17,10 @@ import javax.swing.SpringLayout;
 import game.controller.Controller;
 import game.model.Cell;
 
+/**
+ * @author Dallin Gibbs
+ */
+@SuppressWarnings("serial")
 public class GamePanel extends JPanel
 {
 	private Controller app;
@@ -25,18 +29,17 @@ public class GamePanel extends JPanel
 	 * Holds the total number of cells that fit horizontally in the screen
 	 */
 	private int totalCellCountHorizontal;
-	
+
 	/**
 	 * Holds the total number of cells that fit vertically in the screen
 	 */
 	private int totalCellCountVertical;
-	
 
 	/**
 	 * Holds the pixel width of a cell
 	 */
 	private int cellWidth;
-	
+
 	/**
 	 * Holds the pixel height of a cell
 	 */
@@ -46,7 +49,7 @@ public class GamePanel extends JPanel
 	 * Holds the number of cells that fit horizontally on the game field
 	 */
 	private int gameRowCellCount;
-	
+
 	/**
 	 * Holds the number of cells that fit vertically on the game field
 	 */
@@ -56,53 +59,111 @@ public class GamePanel extends JPanel
 	 * Holds the current index number of how much border fills the screen horizontally
 	 */
 	private int currentBorderRowIndex;
-	
+
 	/**
-	 * 	Holds the current index number of how much border fills the screen vertically
+	 * Holds the current index number of how much border fills the screen vertically
 	 */
 	private int currentBorderColumnIndex;
 
 	/**
-	 * 
+	 * Set to true when the entire game field is full of borders
 	 */
 	private boolean isGameWallFull;
 
 	/**
-	 * 
+	 * Holds the data of all the cells in the game field
 	 */
 	private Cell[][] gameData;
 
 	/**
-	 * 
+	 * Holds the Red Player cell info
 	 */
 	private Cell redPlayer;
+	
+	/**
+	 * Holds the Blue Player cell info
+	 */
 	private Cell bluePlayer;
+	
+	/**
+	 * Holds a Blank cell info
+	 */
 	private Cell blank;
+	
+	/**
+	 * Holds a Border cell info
+	 */
 	private Cell border;
 
+	/**
+	 * Holds a JPanel with Red Player info
+	 */
 	private PlayerInfo redPlayerData;
+	
+	/**
+	 * Holds a JPanel with Blue Player info
+	 */
 	private PlayerInfo bluePlayerData;
 
+	/**
+	 * Holds time in milliseconds of last fire update
+	 */
 	private Long panelLastShot;
-	private Long panelLastCycle;
-	private Long panelLastShrink;
 	
+	/**
+	 * Holds time in milliseconds of last screen update
+	 */
+	private Long panelLastCycle;
+	
+	/**
+	 * Holds time in milliseconds of last shrink update
+	 */
+	private Long panelLastShrink;
+
+	/**
+	 * Holds the scaling value of the shrinkThreshold
+	 */
 	private double scaleShrinkThreshold;
 
+	/**
+	 * Holds the JPanel with game field informations
+	 */
 	private JPanel gameFieldPanel;
+	
+	/**
+	 * Holds the JTable with visual game information
+	 */
 	private JTable gameTable;
-	private JTable testTable;
 
+	/**
+	 * Holds a set determining which WASD key is currently pressed
+	 */
 	private Set<Integer> pressedKeysWASD;
+	
+	/**
+	 * Holds a set determining which arrow key is currently pressed
+	 */
 	private Set<Integer> pressedKeysArrows;
 
+	/**
+	 * Holds a spring layout for the overall game layout
+	 */
 	private SpringLayout overallLayout;
+	
+	/**
+	 * Holds a spring layout for the game field layout
+	 */
 	private SpringLayout fieldLayout;
 
+	/**
+	 * Holds the KeyListener for determining key presses
+	 */
 	private KeyListener keyboardListener;
 
 	/**
-	 * @param app
+	 * Builds the JPanel for the game
+	 * 
+	 * @param app is a reference to the Controller
 	 */
 	public GamePanel(Controller app)
 	{
@@ -123,12 +184,12 @@ public class GamePanel extends JPanel
 		this.gameFieldPanel = new JPanel();
 		this.gameTable = new JTable(gameRowCellCount, gameColumnCellCount)
 		{
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int column)
 			{
 				return ImageIcon.class;
 			}
 		};
-		this.testTable = new JTable(gameRowCellCount, gameColumnCellCount);
 
 		this.panelLastShot = System.currentTimeMillis();
 		this.panelLastCycle = System.currentTimeMillis();
@@ -147,42 +208,16 @@ public class GamePanel extends JPanel
 
 	}
 
+	/**
+	 * Updates data members and adds them to the panel
+	 */
 	private void setupPanel()
 	{
 		this.setLayout(overallLayout);
 		this.setBackground(Color.DARK_GRAY);
 
 		gameFieldPanel.setLayout(fieldLayout);
-		// this.add(testTable);
 
-		setupInitialGameField();
-	}
-
-	private void setScreenProportions()
-	{
-		this.cellWidth = 38;
-		this.cellHeight = 30;
-
-		this.currentBorderRowIndex = 0;
-		this.currentBorderColumnIndex = 0;
-		this.isGameWallFull = false;
-
-		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-
-		int screenHeight = (int) size.getHeight();
-		int screenWidth = (int) size.getWidth();
-
-		this.totalCellCountHorizontal = (int) (screenWidth / cellWidth);
-		this.totalCellCountVertical = (int) (screenHeight / cellHeight);
-
-		gameColumnCellCount = totalCellCountHorizontal - 18;
-		gameRowCellCount = totalCellCountVertical - 10;
-
-		this.setSize(new Dimension((gameColumnCellCount + 18) * cellWidth, (gameRowCellCount + 10) * cellHeight));
-	}
-
-	private void setupInitialGameField()
-	{
 		gameTable.setRowHeight(30);
 		// 1330, 840
 		gameTable.setSize(new Dimension(38 * gameColumnCellCount, 30 * gameRowCellCount));
@@ -223,9 +258,37 @@ public class GamePanel extends JPanel
 
 		redPlayerData.setSize(new Dimension(cellWidth * (((totalCellCountHorizontal - gameRowCellCount) / 2) - 2), cellHeight * (gameColumnCellCount - 2)));
 		bluePlayerData.setSize(new Dimension(cellWidth * (((totalCellCountHorizontal - gameRowCellCount) / 2) - 2), cellHeight * (gameColumnCellCount - 2)));
-
 	}
 
+	/**
+	 * Adjusts the spacing and cell count of the game based off the screen size
+	 */
+	private void setScreenProportions()
+	{
+		this.cellWidth = 38;
+		this.cellHeight = 30;
+
+		this.currentBorderRowIndex = 0;
+		this.currentBorderColumnIndex = 0;
+		this.isGameWallFull = false;
+
+		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+
+		int screenHeight = (int) size.getHeight();
+		int screenWidth = (int) size.getWidth();
+
+		this.totalCellCountHorizontal = (int) (screenWidth / cellWidth);
+		this.totalCellCountVertical = (int) (screenHeight / cellHeight);
+
+		gameColumnCellCount = totalCellCountHorizontal - 18;
+		gameRowCellCount = totalCellCountVertical - 10;
+
+		this.setSize(new Dimension((gameColumnCellCount + 18) * cellWidth, (gameRowCellCount + 10) * cellHeight));
+	}
+
+	/**
+	 * Creates KeyListener object to watch for key presses by the users
+	 */
 	private void setupListeners()
 	{
 		this.keyboardListener = new KeyListener()
@@ -341,6 +404,9 @@ public class GamePanel extends JPanel
 		fieldLayout.putConstraint(SpringLayout.SOUTH, bluePlayerData, -cellHeight, SpringLayout.SOUTH, gameFieldPanel);
 	}
 
+	/**
+	 * Moves Red Player based off W key
+	 */
 	private void handleWKey()
 	{
 		int currentRow = redPlayer.getRow();
@@ -378,6 +444,10 @@ public class GamePanel extends JPanel
 		gameData[currentRow][currentColumn] = blank;
 
 	}
+
+	/**
+	 * Moves Red Player based off A key
+	 */
 
 	private void handleAKey()
 	{
@@ -417,6 +487,10 @@ public class GamePanel extends JPanel
 		gameData[currentRow][currentColumn] = blank;
 	}
 
+	/**
+	 * Moves Red Player based off S key
+	 */
+
 	private void handleSKey()
 	{
 		int currentRow = redPlayer.getRow();
@@ -454,6 +528,10 @@ public class GamePanel extends JPanel
 		gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
 		gameData[currentRow][currentColumn] = blank;
 	}
+
+	/**
+	 * Moves Red Player based off D key
+	 */
 
 	private void handleDKey()
 	{
@@ -493,6 +571,10 @@ public class GamePanel extends JPanel
 		gameData[currentRow][currentColumn] = blank;
 
 	}
+	
+	/**
+	 * Moves Blue Player based off Up key
+	 */
 
 	private void handleUpKey()
 	{
@@ -531,6 +613,10 @@ public class GamePanel extends JPanel
 		gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
 		gameData[currentRow][currentColumn] = blank;
 	}
+	
+	/**
+	 * Moves Blue Player based off Left key
+	 */
 
 	private void handleLeftKey()
 	{
@@ -569,6 +655,10 @@ public class GamePanel extends JPanel
 		gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
 		gameData[currentRow][currentColumn] = blank;
 	}
+	
+	/**
+	 * Moves Blue Player based off Down key
+	 */
 
 	private void handleDownKey()
 	{
@@ -607,6 +697,10 @@ public class GamePanel extends JPanel
 		gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
 		gameData[currentRow][currentColumn] = blank;
 	}
+	
+	/**
+	 * Moves Blue Player based off Right key
+	 */
 
 	private void handleRightKey()
 	{
@@ -647,9 +741,14 @@ public class GamePanel extends JPanel
 
 	}
 
+	
+	/**
+	 * Fires a bullet from each player based of time and direction of player
+	 * @param lastShot is the time when the last bullet was fired in milliseconds
+	 * @param threshold is the amount of time to take between shots in milliseconds
+	 */
 	public void fireBullets(long lastShot, long threshold)
 	{
-
 		long now = System.currentTimeMillis();
 
 		if (now - lastShot > threshold)
@@ -799,7 +898,12 @@ public class GamePanel extends JPanel
 			panelLastShot = now;
 		}
 	}
-
+	
+	/**
+	 * Updates the cells in the game based of cycle timing
+	 * @param lastCycle is the time when the last update occurred in milliseconds
+	 * @param cycleThreshold is the amount of time to take between updates in milliseconds
+	 */
 	public void checkCells(long lastCycle, long cycleThreshold)
 	{
 		long now = System.currentTimeMillis();
@@ -813,7 +917,6 @@ public class GamePanel extends JPanel
 				for (int column = 0; column < gameData[0].length; column++)
 				{
 					currentCell = gameData[row][column];
-					testTable.setValueAt(currentCell.getCellType(), row, column);
 
 					if (currentCell.getCellType().equals("BULLET") && !currentCell.getCellChecked())
 					{
@@ -932,6 +1035,11 @@ public class GamePanel extends JPanel
 
 	}
 
+	/**
+	 * Creates border cells to shrink the game screen based on timing
+	 * @param lastShrink is the time when the last shrink occurred in milliseconds
+	 * @param shrinkThreshold is the amount of time to take between shrinks in milliseconds
+	 */
 	public void shrinkScreen(long lastShrink, long shrinkThreshold)
 	{
 		long now = System.currentTimeMillis();
@@ -1022,6 +1130,11 @@ public class GamePanel extends JPanel
 
 	}
 
+	/**
+	 * Checks the game data to see if players are dead or if border fills the screen
+	 * 
+	 * @return false if players are alive, true if one is dead or border fills screen
+	 */
 	public boolean arePlayersDead()
 	{
 		if (redPlayer.getHealth() == 0 || bluePlayer.getHealth() == 0)
@@ -1050,6 +1163,11 @@ public class GamePanel extends JPanel
 		}
 	}
 
+	/**
+	 * Checks the game data to see which player won or if border fills screen
+	 * 
+	 * @return name of the winner
+	 */
 	public String playerVictor()
 	{
 		if (isGameWallFull)
@@ -1077,7 +1195,7 @@ public class GamePanel extends JPanel
 		else
 		{
 			gameFieldPanel.setBackground(Color.RED);
-			
+
 			for (int row = 0; row < gameTable.getRowCount(); row++)
 			{
 				for (int column = 0; column < gameTable.getColumnCount(); column++)
@@ -1089,16 +1207,16 @@ public class GamePanel extends JPanel
 					}
 				}
 			}
-			
+
 			return "RED";
 		}
 	}
-	
+
 	public long getPanelLastShot()
 	{
 		return panelLastShot;
 	}
-	
+
 	public long getPanelLastShrink()
 	{
 		return panelLastShrink;
@@ -1108,5 +1226,5 @@ public class GamePanel extends JPanel
 	{
 		return panelLastCycle;
 	}
-	
+
 }
