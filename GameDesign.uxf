@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>10</x>
+      <y>0</y>
+      <w>220</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>game.controller :: Runner
+--
+PSVM
+
+bg=#730400</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>10</x>
+      <y>250</y>
+      <w>220</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>game.controller :: IOController
+--
++loadData() : int[]
++saveData() : void
+
+bg=#fca09d</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>670</y>
+      <w>240</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>game.model :: HealthCell
+--
+-cellImage : ImageIcon
+--
++HealthCell(String) : Constructor
++ get()/set(...)
+
+bg=#3ef05a</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>10</x>
+      <y>60</y>
+      <w>220</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>game.controller :: Controller
+--
+-display : GameFrame
+-menu : Popup
+-isPlayerDead: boolean
+-winRecords : int[]
+-dataFile : String
+--
++Controller() : Constructor
++start() : void
++clearScreen : void
++toString() : String
+
+bg=red</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>10</x>
+      <y>350</y>
+      <w>330</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>game.model :: Cell
+--
+-cellOwner : String
+-cellName : String
+-cellType : String
+-cellChecked : boolean
+-cellImage : ImageIcon
+-cellHealth : int
+-cellDirection : int
+-cellRow : int
+-cellColumn : int
+--
++Cell(String) : Constructor
++Cell(String, String, int, boolean) : Constructor
++Cell(String, String, int, int, int) : Constructor
+#setImageIcon(String) : ImageIcon
+-setImageIcon(String, String, int) : void
++ get()/set(...)
+
+bg=#014f0d</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>620</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+</diagram>
