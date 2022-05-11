@@ -32,7 +32,9 @@ public class Controller
 	public String start()
 	{
 		this.winRecords = IOController.loadData(dataFile, display);
-		System.out.println("RED:" + winRecords[0] + " BLUE:" + winRecords[1] + " TIE:" + winRecords[2]);
+		
+		menu.displayMessage(display, "The current records are:" + "\nRed Wins: " + winRecords[0] + "\nBlue Wins: " + winRecords[1] + "\nTies: " + winRecords[2] +  "\n\nPress OK to start the game");
+		
 		long lastShot = System.currentTimeMillis();
 		final long shotThreshold = 400; 
 		
