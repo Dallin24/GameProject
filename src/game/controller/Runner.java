@@ -1,7 +1,5 @@
 package game.controller;
 
-import game.view.Popup;
-
 public class Runner
 {
 	public static void main(String[] args)
