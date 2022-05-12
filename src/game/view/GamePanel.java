@@ -61,7 +61,8 @@ public class GamePanel extends JPanel
 	private int gameColumnCellCount;
 
 	/**
-	 * Holds the current index number of how much border fills the screen horizontally
+	 * Holds the current index number of how much border fills the screen
+	 * horizontally
 	 */
 	private int currentBorderRowIndex;
 
@@ -84,17 +85,17 @@ public class GamePanel extends JPanel
 	 * Holds the Red Player cell info
 	 */
 	private Cell redPlayer;
-	
+
 	/**
 	 * Holds the Blue Player cell info
 	 */
 	private Cell bluePlayer;
-	
+
 	/**
 	 * Holds a Blank cell info
 	 */
 	private Cell blank;
-	
+
 	/**
 	 * Holds a Border cell info
 	 */
@@ -104,7 +105,7 @@ public class GamePanel extends JPanel
 	 * Holds a JPanel with Red Player info
 	 */
 	private PlayerInfo redPlayerData;
-	
+
 	/**
 	 * Holds a JPanel with Blue Player info
 	 */
@@ -114,12 +115,12 @@ public class GamePanel extends JPanel
 	 * Holds time in milliseconds of last fire update
 	 */
 	private Long panelLastShot;
-	
+
 	/**
 	 * Holds time in milliseconds of last screen update
 	 */
 	private Long panelLastCycle;
-	
+
 	/**
 	 * Holds time in milliseconds of last shrink update
 	 */
@@ -134,7 +135,7 @@ public class GamePanel extends JPanel
 	 * Holds the JPanel with game field informations
 	 */
 	private JPanel gameFieldPanel;
-	
+
 	/**
 	 * Holds the JTable with visual game information
 	 */
@@ -144,7 +145,7 @@ public class GamePanel extends JPanel
 	 * Holds a set determining which WASD key is currently pressed
 	 */
 	private Set<Integer> pressedKeysWASD;
-	
+
 	/**
 	 * Holds a set determining which arrow key is currently pressed
 	 */
@@ -154,7 +155,7 @@ public class GamePanel extends JPanel
 	 * Holds a spring layout for the overall game layout
 	 */
 	private SpringLayout overallLayout;
-	
+
 	/**
 	 * Holds a spring layout for the game field layout
 	 */
@@ -576,7 +577,7 @@ public class GamePanel extends JPanel
 		gameData[currentRow][currentColumn] = blank;
 
 	}
-	
+
 	/**
 	 * Moves Blue Player based off Up key
 	 */
@@ -618,7 +619,7 @@ public class GamePanel extends JPanel
 		gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
 		gameData[currentRow][currentColumn] = blank;
 	}
-	
+
 	/**
 	 * Moves Blue Player based off Left key
 	 */
@@ -660,7 +661,7 @@ public class GamePanel extends JPanel
 		gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
 		gameData[currentRow][currentColumn] = blank;
 	}
-	
+
 	/**
 	 * Moves Blue Player based off Down key
 	 */
@@ -702,7 +703,7 @@ public class GamePanel extends JPanel
 		gameTable.setValueAt(blank.getImage(), currentRow, currentColumn);
 		gameData[currentRow][currentColumn] = blank;
 	}
-	
+
 	/**
 	 * Moves Blue Player based off Right key
 	 */
@@ -746,10 +747,10 @@ public class GamePanel extends JPanel
 
 	}
 
-	
 	/**
 	 * Fires a bullet from each player based of time and direction of player
-	 * @param lastShot is the time when the last bullet was fired in milliseconds
+	 * 
+	 * @param lastShot  is the time when the last bullet was fired in milliseconds
 	 * @param threshold is the amount of time to take between shots in milliseconds
 	 */
 	public void fireBullets(long lastShot, long threshold)
@@ -758,8 +759,7 @@ public class GamePanel extends JPanel
 
 		if (now - lastShot > threshold)
 		{
-			
-			
+
 			int blueRow = bluePlayer.getRow();
 			int blueColumn = bluePlayer.getColumn();
 			int blueDirection = bluePlayer.getDirection();
@@ -768,7 +768,7 @@ public class GamePanel extends JPanel
 
 			bluePlayer.setDirection(blueDirection, true);
 			gameTable.setValueAt(bluePlayer.getImage(), blueRow, blueColumn);
-			
+
 			switch (blueDirection)
 			{
 			case (0):
@@ -837,11 +837,9 @@ public class GamePanel extends JPanel
 			int redColumn = redPlayer.getColumn();
 			int redDirection = redPlayer.getDirection();
 
-			
 			redPlayer.setDirection(redDirection, true);
 			gameTable.setValueAt(redPlayer.getImage(), redRow, redColumn);
-			
-			
+
 			Cell redBullet = new Cell("RED", "BULLET", redDirection, false);
 
 			// System.out.println(redDirection);
@@ -913,11 +911,14 @@ public class GamePanel extends JPanel
 			panelLastShot = now;
 		}
 	}
-	
+
 	/**
 	 * Updates the cells in the game based of cycle timing
-	 * @param lastCycle is the time when the last update occurred in milliseconds
-	 * @param cycleThreshold is the amount of time to take between updates in milliseconds
+	 * 
+	 * @param lastCycle      is the time when the last update occurred in
+	 *                       milliseconds
+	 * @param cycleThreshold is the amount of time to take between updates in
+	 *                       milliseconds
 	 */
 	public void checkCells(long lastCycle, long cycleThreshold)
 	{
@@ -926,14 +927,14 @@ public class GamePanel extends JPanel
 		if (now - lastCycle > cycleThreshold)
 		{
 			Cell currentCell;
-			
+
 			bluePlayer.setDirection(bluePlayer.getDirection());
 			gameTable.setValueAt(bluePlayer.getImage(), bluePlayer.getRow(), bluePlayer.getColumn());
-			//gameData[bluePlayer.getRow()][bluePlayer.getColumn()] = bluePlayer;
-			
+			// gameData[bluePlayer.getRow()][bluePlayer.getColumn()] = bluePlayer;
+
 			redPlayer.setDirection(redPlayer.getDirection());
 			gameTable.setValueAt(redPlayer.getImage(), redPlayer.getRow(), redPlayer.getColumn());
-			//gameData[redPlayer.getRow()][redPlayer.getColumn()] = redPlayer;
+			// gameData[redPlayer.getRow()][redPlayer.getColumn()] = redPlayer;
 
 			for (int row = 0; row < gameData.length; row++)
 			{
@@ -1060,8 +1061,11 @@ public class GamePanel extends JPanel
 
 	/**
 	 * Creates border cells to shrink the game screen based on timing
-	 * @param lastShrink is the time when the last shrink occurred in milliseconds
-	 * @param shrinkThreshold is the amount of time to take between shrinks in milliseconds
+	 * 
+	 * @param lastShrink      is the time when the last shrink occurred in
+	 *                        milliseconds
+	 * @param shrinkThreshold is the amount of time to take between shrinks in
+	 *                        milliseconds
 	 */
 	public void shrinkScreen(long lastShrink, long shrinkThreshold)
 	{
@@ -1156,7 +1160,8 @@ public class GamePanel extends JPanel
 	/**
 	 * Checks the game data to see if players are dead or if border fills the screen
 	 * 
-	 * @return false if players are alive, true if one is dead or border fills screen
+	 * @return false if players are alive, true if one is dead or border fills
+	 *         screen
 	 */
 	public boolean arePlayersDead()
 	{
