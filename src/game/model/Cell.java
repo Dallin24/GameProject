@@ -2,27 +2,77 @@ package game.model;
 
 import javax.swing.ImageIcon;
 
+/**
+ * Contains cell information for game
+ * 
+ * @author Dallin Gibbs
+ */
 public class Cell
 {
+	/**
+	 * Holds the owner of the cell, usually for bullets
+	 */
 	private String cellOwner;
+
+	/**
+	 * Holds the name of the cell
+	 */
 	private String cellName;
+
+	/**
+	 * Holds the cell type
+	 */
 	private String cellType;
-	
+
+	/**
+	 * Holds boolean if cell was previously checked
+	 */
 	private boolean cellChecked;
 
+	/**
+	 * Holds the cell image
+	 */
 	private ImageIcon cellImage;
 
+	/**
+	 * Holds the health value of the cell
+	 */
 	private int cellHealth;
+
+	/**
+	 * Holds the direction of cell in degrees
+	 */
 	private int cellDirection;
+
+	/**
+	 * Holds the current row of the cell
+	 */
 	private int cellRow;
+
+	/**
+	 * Holds the current column of the cell
+	 */
 	private int cellColumn;
-	
+
+	/**
+	 * Creates a blank cell
+	 * 
+	 * @param cellType
+	 */
 	public Cell(String cellType)
 	{
 		this.cellType = cellType;
 		this.cellImage = setImageIcon(cellType);
 	}
 
+	/**
+	 * Creates bullet cell
+	 * 
+	 * @param cellOwner
+	 * @param cellType
+	 * @param cellDirection
+	 * @param cellChecked
+	 */
 	public Cell(String cellOwner, String cellType, int cellDirection, boolean cellChecked)
 	{
 		this.cellOwner = cellOwner;
@@ -32,6 +82,15 @@ public class Cell
 		this.cellChecked = cellChecked;
 	}
 
+	/**
+	 * Creates a player cell
+	 * 
+	 * @param playerName
+	 * @param cellType
+	 * @param cellDirection
+	 * @param row
+	 * @param column
+	 */
 	public Cell(String playerName, String cellType, int cellDirection, int row, int column)
 	{
 		this.cellName = playerName;
@@ -41,6 +100,13 @@ public class Cell
 		this.cellHealth = 100;
 	}
 
+	/**
+	 * 
+	 * Set image for cell
+	 * 
+	 * @param cellType
+	 * @return
+	 */
 	protected ImageIcon setImageIcon(String cellType)
 	{
 		ImageIcon cellImage = new ImageIcon(getClass().getResource("/game/view/images/Background.png"));
@@ -53,7 +119,8 @@ public class Cell
 			if (this.cellName.equals("RED"))
 			{
 				cellImage = new ImageIcon(getClass().getResource("/game/view/images/RedRightNormal.png"));
-			} else
+			}
+			else
 			{
 				cellImage = new ImageIcon(getClass().getResource("/game/view/images/BlueLeftNormal.png"));
 			}
@@ -69,6 +136,13 @@ public class Cell
 		return cellImage;
 	}
 
+	/**
+	 * Set image for player cell
+	 * 
+	 * @param cellName
+	 * @param cellType
+	 * @param direction
+	 */
 	private void setImageIcon(String cellName, String cellType, int direction)
 	{
 		ImageIcon playerImage = new ImageIcon();
@@ -90,7 +164,8 @@ public class Cell
 				playerImage = new ImageIcon(getClass().getResource("/game/view/images/RedLeftNormal.png"));
 				break;
 			}
-		} else
+		}
+		else
 		{
 			switch (direction)
 			{
@@ -108,10 +183,18 @@ public class Cell
 				break;
 			}
 		}
-		
+
 		this.cellImage = playerImage;
 	}
-	
+
+	/**
+	 * Sets image for player cell when firing
+	 * 
+	 * @param cellName
+	 * @param cellType
+	 * @param direction
+	 * @param isFire
+	 */
 	private void setImageIcon(String cellName, String cellType, int direction, boolean isFire)
 	{
 		ImageIcon playerImage = new ImageIcon();
@@ -133,7 +216,8 @@ public class Cell
 				playerImage = new ImageIcon(getClass().getResource("/game/view/images/RedLeftFire.png"));
 				break;
 			}
-		} else
+		}
+		else
 		{
 			switch (direction)
 			{
@@ -151,7 +235,7 @@ public class Cell
 				break;
 			}
 		}
-		
+
 		this.cellImage = playerImage;
 	}
 
@@ -159,7 +243,7 @@ public class Cell
 	{
 		this.cellType = cellType;
 	}
-	
+
 	public void setCellChecked(boolean newCheck)
 	{
 		this.cellChecked = newCheck;
@@ -173,7 +257,7 @@ public class Cell
 			setImageIcon(this.cellName, this.cellType, newDirection);
 		}
 	}
-	
+
 	public void setDirection(int direction, boolean isFire)
 	{
 		this.cellDirection = direction;
@@ -188,7 +272,7 @@ public class Cell
 		this.cellRow = row;
 		this.cellColumn = column;
 	}
-	
+
 	public void setHealth(int healthPoints)
 	{
 		this.cellHealth = healthPoints;
@@ -203,7 +287,7 @@ public class Cell
 	{
 		return this.cellType;
 	}
-	
+
 	public boolean getCellChecked()
 	{
 		return this.cellChecked;
@@ -223,17 +307,17 @@ public class Cell
 	{
 		return this.cellColumn;
 	}
-	
+
 	public int getHealth()
 	{
 		return this.cellHealth;
 	}
-	
+
 	public String getPlayerName()
 	{
 		return this.cellName;
 	}
-	
+
 	public String getOwner()
 	{
 		return cellOwner;

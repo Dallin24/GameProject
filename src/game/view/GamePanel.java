@@ -18,11 +18,16 @@ import game.controller.Controller;
 import game.model.Cell;
 
 /**
+ * Contains a majority of the game logic and data for the game
+ * 
  * @author Dallin Gibbs
  */
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel
 {
+	/**
+	 * Holds controller for the application
+	 */
 	private Controller app;
 
 	/**
