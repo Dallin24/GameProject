@@ -145,6 +145,10 @@ public class Controller
 		this.winRecords = IOController.loadData(dataFile, display);
 
 		text += "The current records are: " + "Red Wins: " + winRecords[0] + " Blue Wins: " + winRecords[1] + " Ties: " + winRecords[2];
+		
+		text += "\nFile: "+ dataFile;
+		
+		text += "\nArray Length: " + winRecords.length;
 
 		return text;
 	}
