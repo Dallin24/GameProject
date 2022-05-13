@@ -15,7 +15,11 @@ import javax.swing.JTable;
 import javax.swing.SpringLayout;
 
 import game.controller.Controller;
+import game.model.BlankCell;
+import game.model.BorderCell;
+import game.model.BulletCell;
 import game.model.Cell;
+import game.model.PlayerCell;
 
 /**
  * Contains a majority of the game logic and data for the game
@@ -84,22 +88,22 @@ public class GamePanel extends JPanel
 	/**
 	 * Holds the Red Player cell info
 	 */
-	private Cell redPlayer;
+	private PlayerCell redPlayer;
 
 	/**
 	 * Holds the Blue Player cell info
 	 */
-	private Cell bluePlayer;
+	private PlayerCell bluePlayer;
 
 	/**
 	 * Holds a Blank cell info
 	 */
-	private Cell blank;
+	private BlankCell blank;
 
 	/**
 	 * Holds a Border cell info
 	 */
-	private Cell border;
+	private BorderCell border;
 
 	/**
 	 * Holds a JPanel with Red Player info
@@ -179,10 +183,10 @@ public class GamePanel extends JPanel
 		setScreenProportions();
 
 		this.gameData = new Cell[gameRowCellCount][gameColumnCellCount];
-		this.redPlayer = new Cell("RED", "PLAYER", 90, 0, 0);
-		this.bluePlayer = new Cell("BLUE", "PLAYER", 270, 0, 0);
-		this.blank = new Cell("BLANK");
-		this.border = new Cell("BORDER");
+		this.redPlayer = new PlayerCell("RED", "PLAYER", 90, 0, 0);
+		this.bluePlayer = new PlayerCell("BLUE", "PLAYER", 270, 0, 0);
+		this.blank = new BlankCell();
+		this.border = new BorderCell();
 
 		this.redPlayerData = new PlayerInfo(redPlayer, cellWidth, cellHeight);
 		this.bluePlayerData = new PlayerInfo(bluePlayer, cellWidth, cellHeight);
@@ -764,9 +768,9 @@ public class GamePanel extends JPanel
 			int blueColumn = bluePlayer.getColumn();
 			int blueDirection = bluePlayer.getDirection();
 
-			Cell blueBullet = new Cell("BLUE", "BULLET", blueDirection, false);
+			BulletCell blueBullet = new BulletCell("BLUE", blueDirection, false);
 
-			bluePlayer.setDirection(blueDirection, true);
+			bluePlayer.setDirection(blueDirection);
 			gameTable.setValueAt(bluePlayer.getImage(), blueRow, blueColumn);
 
 			switch (blueDirection)
@@ -837,10 +841,10 @@ public class GamePanel extends JPanel
 			int redColumn = redPlayer.getColumn();
 			int redDirection = redPlayer.getDirection();
 
-			redPlayer.setDirection(redDirection, true);
+			redPlayer.setDirection(redDirection);
 			gameTable.setValueAt(redPlayer.getImage(), redRow, redColumn);
 
-			Cell redBullet = new Cell("RED", "BULLET", redDirection, false);
+			BulletCell redBullet = new BulletCell("RED", redDirection, false);
 
 			// System.out.println(redDirection);
 			switch (redDirection)
@@ -960,7 +964,7 @@ public class GamePanel extends JPanel
 							return;
 						}
 
-						blank = new Cell("BLANK");
+						blank = new BlankCell();
 						switch (currentCell.getDirection())
 						{
 						case 0:

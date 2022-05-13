@@ -21,7 +21,7 @@ public class HealthCell extends Cell
 	 */
 	public HealthCell(String color)
 	{
-		super(color);
+		super(color, "COMPUTER", "BORDER", 0, -1, -1, false);
 
 		if (color.equals("GREEN"))
 		{
