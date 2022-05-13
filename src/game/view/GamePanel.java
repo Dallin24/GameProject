@@ -114,17 +114,17 @@ public class GamePanel extends JPanel
 	/**
 	 * Holds time in milliseconds of last fire update
 	 */
-	private Long panelLastShot;
+	private long panelLastShot;
 
 	/**
 	 * Holds time in milliseconds of last screen update
 	 */
-	private Long panelLastCycle;
+	private long panelLastCycle;
 
 	/**
 	 * Holds time in milliseconds of last shrink update
 	 */
-	private Long panelLastShrink;
+	private long panelLastShrink;
 
 	/**
 	 * Holds the scaling value of the shrinkThreshold

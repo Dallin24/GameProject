@@ -5,7 +5,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>10</x>
-      <y>0</y>
+      <y>10</y>
       <w>220</w>
       <h>50</h>
     </coordinates>
@@ -20,7 +20,7 @@ bg=#730400</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>10</x>
-      <y>250</y>
+      <y>260</y>
       <w>220</w>
       <h>70</h>
     </coordinates>
@@ -36,7 +36,7 @@ bg=#fca09d</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>60</x>
-      <y>670</y>
+      <y>680</y>
       <w>240</w>
       <h>90</h>
     </coordinates>
@@ -45,7 +45,7 @@ bg=#fca09d</panel_attributes>
 -cellImage : ImageIcon
 --
 +HealthCell(String) : Constructor
-+ get()/set(...)
++get()/set(...)
 
 bg=#3ef05a</panel_attributes>
     <additional_attributes/>
@@ -54,7 +54,7 @@ bg=#3ef05a</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>10</x>
-      <y>60</y>
+      <y>70</y>
       <w>220</w>
       <h>180</h>
     </coordinates>
@@ -78,7 +78,7 @@ bg=red</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>10</x>
-      <y>350</y>
+      <y>360</y>
       <w>330</w>
       <h>280</h>
     </coordinates>
@@ -99,7 +99,7 @@ bg=red</panel_attributes>
 +Cell(String, String, int, int, int) : Constructor
 #setImageIcon(String) : ImageIcon
 -setImageIcon(String, String, int) : void
-+ get()/set(...)
++get()/set(...)
 
 bg=#014f0d</panel_attributes>
     <additional_attributes/>
@@ -108,11 +108,169 @@ bg=#014f0d</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>170</x>
-      <y>620</y>
+      <y>630</y>
       <w>30</w>
       <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>410</x>
+      <y>450</y>
+      <w>280</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>game.view :: GameFrame
+--
+-app : Controller
+-panel : GamePanel
+--
++GameFrame(Controller) : Constructor
+-setupFrame() : void
++restart(Controller) : void
++checkCells(long, long) : void
++fireBullets(long, long) : void
++shrinkScreen(long, long) : void
++arePlauersDead() : boolean
++playerVictor() : String
++get(...)
+bg=#1d0252</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>700</x>
+      <y>40</y>
+      <w>290</w>
+      <h>400</h>
+    </coordinates>
+    <panel_attributes>-app : Controller
+-totalCellCountHorizontal : int
+-totalCellCountVertical : int
+-cellWidth: int
+-cellHeight : int
+-gameRowCellCount : int
+-gameColumnCellCount : int
+-currentBorderRowIndex : int
+-currentBorderColumnIndex : int
+-isGameWallFull : boolean
+-gameData : Cell[][]
+-redPlayer : Cell
+-bluePlayer : Cell
+-blank : Cell
+halign=left
+--
+-handleWKey() : void
+-handleAKey() : void
+-handleSKey() : void
+-handleDKey() : void
+-handleUpKey() : void
+-handleLeftKey() : void
+-handleDownKey() : void
+-handleRightKey() : void
++get(...)
+
+bg=#6524e3</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>710</x>
+      <y>450</y>
+      <w>280</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>game.view :: PlayerInfo
+--
+-cellWidth : int
+-cellHeight : int
+-healthBar : JTable
+-healthData : ArrayList&lt;HealthCell&gt;
+-normalDimension : Dimension
+-player : Cell
+-playerName : JTextField
+-playerHealth : JTextField
+-layout : StringLayout
+--
++PlayerInfo(Cell, int, int) : Constructor
+-setupPanel() : void
+-setupLayout() : void
+-updatePlayerData(String, int) : void
+bg=#b79deb</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>410</x>
+      <y>40</y>
+      <w>290</w>
+      <h>400</h>
+    </coordinates>
+    <panel_attributes>-border : Cell
+-redPlayerData : PlayerInfo
+-bluePlayerData : PlayerInfo
+-panelLastShot : long
+-panelLastCycle : long
+-panelLastShrink : long
+-scaleShrinkThreshold : double
+-gameFieldPanel : JPanel
+-gameTable : JTable
+-pressedKeysWASD : Set&lt;Integer&gt;
+-pressedKeysArrows : Set&lt;Integer&gt;
+-overallLayout : SpringLayout
+-fieldLayout : SpringLayout
+-KeyListener : keyboardListener
+halign=left
+--
++GamePanel(app) : Constructor
+-setupPanel() : void
+-setScreenProportions : void
+-setupListeners : void
+-setupLayout : void
++fireBullets(long, long) : void
++checkCells(long, long) : void
++shrinkScreen(long, long) : void
++arePlayersDead() : boolean
++playerVictor() : String
+
+bg=#6524e3</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>410</x>
+      <y>10</y>
+      <w>580</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>game.view :: GamePanel
+
+bg=#6524e3</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>520</x>
+      <y>700</y>
+      <w>340</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>game.view :: Popup
+--
+-options : Object[]
+--
+-displayMessage(JFrame, String) : void
+-displayMessage(JFrame, String, Color) : void
++playAgain(JFrame, String) : String
+bg=#efe8fa</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
