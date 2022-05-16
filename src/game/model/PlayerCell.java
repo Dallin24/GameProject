@@ -110,6 +110,13 @@ public class PlayerCell extends Cell
 	@Override
 	public void setDirection(int newDirection)
 	{
+		cellDirection = newDirection;
 		this.setImageIcon(cellName, newDirection, false);
+	}
+	
+	public void setDirection(int newDirection, boolean isFire)
+	{
+		cellDirection = newDirection;
+		this.setImageIcon(cellName, newDirection, isFire);
 	}
 }

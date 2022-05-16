@@ -441,6 +441,11 @@ public class GamePanel extends JPanel
 			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
 			return;
 		}
+		
+		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("BLUE"))
+		{
+			redPlayerData.updatePlayerData("HEALTH", -10);
+		}
 
 		redPlayer.setLocation(currentRow - 1, currentColumn);
 
@@ -482,6 +487,11 @@ public class GamePanel extends JPanel
 		{
 			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
 			return;
+		}
+		
+		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("BLUE"))
+		{
+			redPlayerData.updatePlayerData("HEALTH", -10);
 		}
 
 		redPlayer.setLocation(currentRow, currentColumn - 1);
@@ -525,6 +535,11 @@ public class GamePanel extends JPanel
 			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
 			return;
 		}
+		
+		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("BLUE"))
+		{
+			redPlayerData.updatePlayerData("HEALTH", -10);
+		}
 
 		redPlayer.setLocation(currentRow + 1, currentColumn);
 
@@ -566,6 +581,11 @@ public class GamePanel extends JPanel
 		{
 			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
 			return;
+		}
+		
+		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("BLUE"))
+		{
+			redPlayerData.updatePlayerData("HEALTH", -10);
 		}
 
 		redPlayer.setLocation(currentRow, currentColumn + 1);
@@ -610,6 +630,11 @@ public class GamePanel extends JPanel
 			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
 			return;
 		}
+		
+		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("RED"))
+		{
+			bluePlayerData.updatePlayerData("HEALTH", -10);
+		}
 
 		bluePlayer.setLocation(currentRow - 1, currentColumn);
 
@@ -651,6 +676,11 @@ public class GamePanel extends JPanel
 		{
 			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
 			return;
+		}
+		
+		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("RED"))
+		{
+			bluePlayerData.updatePlayerData("HEALTH", -10);
 		}
 
 		bluePlayer.setLocation(currentRow, currentColumn - 1);
@@ -694,6 +724,11 @@ public class GamePanel extends JPanel
 			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
 			return;
 		}
+		
+		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("RED"))
+		{
+			bluePlayerData.updatePlayerData("HEALTH", -10);
+		}
 
 		bluePlayer.setLocation(currentRow + 1, currentColumn);
 
@@ -701,6 +736,7 @@ public class GamePanel extends JPanel
 		{
 			bluePlayerData.updatePlayerData("HEALTH", -10);
 		}
+		
 
 		gameTable.setValueAt(bluePlayer.getImage(), currentRow + 1, currentColumn);
 		gameData[currentRow + 1][currentColumn] = bluePlayer;
@@ -736,6 +772,11 @@ public class GamePanel extends JPanel
 			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
 			return;
 		}
+		
+		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("RED"))
+		{
+			bluePlayerData.updatePlayerData("HEALTH", -10);
+		}
 
 		bluePlayer.setLocation(currentRow, currentColumn + 1);
 
@@ -770,7 +811,7 @@ public class GamePanel extends JPanel
 
 			BulletCell blueBullet = new BulletCell("BLUE", blueDirection, false);
 
-			bluePlayer.setDirection(blueDirection);
+			bluePlayer.setDirection(blueDirection, true);
 			gameTable.setValueAt(bluePlayer.getImage(), blueRow, blueColumn);
 
 			switch (blueDirection)
@@ -841,7 +882,7 @@ public class GamePanel extends JPanel
 			int redColumn = redPlayer.getColumn();
 			int redDirection = redPlayer.getDirection();
 
-			redPlayer.setDirection(redDirection);
+			redPlayer.setDirection(redDirection, true);
 			gameTable.setValueAt(redPlayer.getImage(), redRow, redColumn);
 
 			BulletCell redBullet = new BulletCell("RED", redDirection, false);
@@ -948,6 +989,7 @@ public class GamePanel extends JPanel
 
 					if (currentCell.getCellType().equals("BULLET") && !currentCell.getCellChecked())
 					{
+						
 						if (redPlayer.getRow() == row && redPlayer.getColumn() == column /* && currentCell.getOwner().equals("BLUE") */)
 						{
 							gameData[row][column] = redPlayer;
