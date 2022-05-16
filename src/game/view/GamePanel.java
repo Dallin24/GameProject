@@ -441,7 +441,7 @@ public class GamePanel extends JPanel
 			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
 			return;
 		}
-		
+
 		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("BLUE"))
 		{
 			redPlayerData.updatePlayerData("HEALTH", -10);
@@ -488,7 +488,7 @@ public class GamePanel extends JPanel
 			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
 			return;
 		}
-		
+
 		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("BLUE"))
 		{
 			redPlayerData.updatePlayerData("HEALTH", -10);
@@ -535,7 +535,7 @@ public class GamePanel extends JPanel
 			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
 			return;
 		}
-		
+
 		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("BLUE"))
 		{
 			redPlayerData.updatePlayerData("HEALTH", -10);
@@ -582,7 +582,7 @@ public class GamePanel extends JPanel
 			gameTable.setValueAt(redPlayer.getImage(), currentRow, currentColumn);
 			return;
 		}
-		
+
 		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("BLUE"))
 		{
 			redPlayerData.updatePlayerData("HEALTH", -10);
@@ -630,7 +630,7 @@ public class GamePanel extends JPanel
 			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
 			return;
 		}
-		
+
 		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("RED"))
 		{
 			bluePlayerData.updatePlayerData("HEALTH", -10);
@@ -677,7 +677,7 @@ public class GamePanel extends JPanel
 			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
 			return;
 		}
-		
+
 		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("RED"))
 		{
 			bluePlayerData.updatePlayerData("HEALTH", -10);
@@ -724,7 +724,7 @@ public class GamePanel extends JPanel
 			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
 			return;
 		}
-		
+
 		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("RED"))
 		{
 			bluePlayerData.updatePlayerData("HEALTH", -10);
@@ -736,7 +736,6 @@ public class GamePanel extends JPanel
 		{
 			bluePlayerData.updatePlayerData("HEALTH", -10);
 		}
-		
 
 		gameTable.setValueAt(bluePlayer.getImage(), currentRow + 1, currentColumn);
 		gameData[currentRow + 1][currentColumn] = bluePlayer;
@@ -772,7 +771,7 @@ public class GamePanel extends JPanel
 			gameTable.setValueAt(bluePlayer.getImage(), currentRow, currentColumn);
 			return;
 		}
-		
+
 		if (gameData[currentRow][currentColumn].getCellType().equals("BULLET") && gameData[currentRow][currentColumn].getOwner().equals("RED"))
 		{
 			bluePlayerData.updatePlayerData("HEALTH", -10);
@@ -989,7 +988,7 @@ public class GamePanel extends JPanel
 
 					if (currentCell.getCellType().equals("BULLET") && !currentCell.getCellChecked())
 					{
-						
+
 						if (redPlayer.getRow() == row && redPlayer.getColumn() == column /* && currentCell.getOwner().equals("BLUE") */)
 						{
 							gameData[row][column] = redPlayer;
@@ -1016,6 +1015,23 @@ public class GamePanel extends JPanel
 								{
 									throw new ArrayIndexOutOfBoundsException();
 								}
+
+								if (gameData[row - 1][column].getCellType().equals("BULLET") && gameData[row - 1][column].getDirection() == 180)
+								{
+									if (flipCoin())
+									{
+										currentCell = blank;
+										gameTable.setValueAt(blank.getImage(), row, column);
+									}
+									else
+									{
+										gameData[row - 1][column] = blank;
+										gameTable.setValueAt(blank.getImage(), row - 1, column);
+									}
+
+									throw new ArrayIndexOutOfBoundsException();
+								}
+
 								gameData[row - 1][column] = currentCell;
 								gameTable.setValueAt(currentCell.getImage(), row - 1, column);
 								gameData[row][column] = blank;
@@ -1035,6 +1051,23 @@ public class GamePanel extends JPanel
 								{
 									throw new ArrayIndexOutOfBoundsException();
 								}
+
+								if (gameData[row][column + 1].getCellType().equals("BULLET") && gameData[row][column + 1].getDirection() == 270)
+								{
+									if (flipCoin())
+									{
+										currentCell = blank;
+										gameTable.setValueAt(blank.getImage(), row, column);
+									}
+									else
+									{
+										gameData[row][column + 1] = blank;
+										gameTable.setValueAt(blank.getImage(), row, column + 1);
+									}
+
+									throw new ArrayIndexOutOfBoundsException();
+								}
+
 								gameData[row][column + 1] = currentCell;
 								gameTable.setValueAt(currentCell.getImage(), row, column + 1);
 								gameData[row][column] = blank;
@@ -1054,6 +1087,23 @@ public class GamePanel extends JPanel
 								{
 									throw new ArrayIndexOutOfBoundsException();
 								}
+
+								if (gameData[row + 1][column].getCellType().equals("BULLET") && gameData[row + 1][column].getDirection() == 0)
+								{
+									if (flipCoin())
+									{
+										currentCell = blank;
+										gameTable.setValueAt(blank.getImage(), row, column);
+									}
+									else
+									{
+										gameData[row + 1][column] = blank;
+										gameTable.setValueAt(blank.getImage(), row + 1, column);
+									}
+
+									throw new ArrayIndexOutOfBoundsException();
+								}
+
 								gameData[row + 1][column] = currentCell;
 								gameTable.setValueAt(currentCell.getImage(), row + 1, column);
 								gameData[row][column] = blank;
@@ -1071,6 +1121,22 @@ public class GamePanel extends JPanel
 							{
 								if (gameData[row][column - 1].getCellType().equals("BORDER"))
 								{
+									throw new ArrayIndexOutOfBoundsException();
+								}
+
+								if (gameData[row][column - 1].getCellType().equals("BULLET") && gameData[row][column - 1].getDirection() == 90)
+								{
+									if (flipCoin())
+									{
+										currentCell = blank;
+										gameTable.setValueAt(blank.getImage(), row, column);
+									}
+									else
+									{
+										gameData[row][column - 1] = blank;
+										gameTable.setValueAt(blank.getImage(), row, column - 1);
+									}
+
 									throw new ArrayIndexOutOfBoundsException();
 								}
 								gameData[row][column - 1] = currentCell;
@@ -1284,6 +1350,15 @@ public class GamePanel extends JPanel
 
 			return "RED";
 		}
+	}
+
+	private boolean flipCoin()
+	{
+		if ((int) (Math.random() * 2) == 1)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	public long getPanelLastShot()
